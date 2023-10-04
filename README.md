@@ -12,7 +12,7 @@
 [<img src="https://avatars.githubusercontent.com/u/129932517?v=4" width="150px">](https://github.com/Jihye511)|[<img src="https://avatars.githubusercontent.com/u/124170300?v=4" width="150px;" alt=""/>](https://github.com/oz115) |[<img src="https://avatars.githubusercontent.com/u/87516405?v=4" width="150px" >](https://github.com/yedamhy)
 |:---:|:---:|:---:|
 |[이지혜](https://github.com/Jihye511) |[이영주](https://github.com/oz115) |[현예닮](https://github.com/yedamhy)|
-|👑 **PM** 정융20 | 정융20 | 정융20 |
+|👑 **PM** 정보융합학부 20 | 정보융합학부 20| 정보융합학부 20 |
 
 <br>
 
