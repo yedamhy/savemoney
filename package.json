@@ -21,5 +21,11 @@
   "homepage": "https://github.com/kw-ic-web/23-teampjt-webgurae#readme",
   "devDependencies": {
     "nodemon": "^3.0.1"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "nunjucks": "^3.2.4",
+    "session": "^0.1.0"
   }
 }

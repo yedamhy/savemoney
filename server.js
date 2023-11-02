@@ -2,6 +2,35 @@ const http = require('http');
 const fs = require('fs').promises;
 const path = require('path');
 const url = require('url');
+const express = require('express');
+
+const app = express();
+const nunjucks = require('nunjucks');
+const session = require('express-session');
+
+app.set('view engine','html');
+nunjucks.configure('views',{
+    express:app,
+})
+
+app.use(session({
+    resave:true,
+    secret:'ras',
+    secure:false,
+    saveUninitialized:false,
+}))//세션을 설정할 때 쿠키가 생성된다.&&req session의 값도 생성해준다. 어느 라우터든 req session값이 존재하게 된다.
+
+const kakao = {
+    clientID:'5baab2d43a20bfe012d6a7adafdbd477',
+    clientSecret:'\t3vXooJjwRZeKlqnHuqqcrYuhQ1hjuR3J',
+    redirectUrl: 'http://localhost:8080/auth/kakao/callback'
+}
+
+//profile account_email
+app.get('/auth/kakao',(req,res)=>{
+    const kakaoAuthURL = `https://kauth.kakao.com/oauth/authorize?client_id=${kakao.clientID}&redirect_url=${kakao.redirectUrl}&response_type=code&scope=profile,account_email`;
+    res.redirect(kakaoAuthURL);
+})
 
 http.createServer(async (req, res) => {
     try {
