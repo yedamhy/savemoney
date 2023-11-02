@@ -1,0 +1,25 @@
+{
+  "name": "23-teampjt-webgurae",
+  "version": "1.0.0",
+  "description": "<br>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kw-ic-web/23-teampjt-webgurae.git"
+  },
+  "keywords": [
+    "SNS"
+  ],
+  "author": "yedamhy, Jihye511, oz115",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kw-ic-web/23-teampjt-webgurae/issues"
+  },
+  "homepage": "https://github.com/kw-ic-web/23-teampjt-webgurae#readme",
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
