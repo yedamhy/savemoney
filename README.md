@@ -1,39 +1,23 @@
-# Launch
-Launch is a responsive html5 bootstrap free crowdfunding template, which is focused on promoting a websites funding campaign.
+# 23-teampjt-webgurae
+## 💘 1. Team Name
+### Web구래
+<br>
 
-With Launch You'll be able to take full control of your crowdfunding campaign and control the process from start to finish, this is without having to rely on third party services which require fees which are usually deducted from your total campaign.
+**의미** : 왜 그래..? → 왜 구래..? → 웹 구래..? → 웹구래 
+<br>
 
-# Author
+It's **언어유희** 아잉(^///^)
+<br>
 
-This template is made by Justin at [Audain Designs.](http://themes.audaindesigns.com)
+## 🙋‍♂️ 2. Team members
 
-#Licensing
+[<img src="https://avatars.githubusercontent.com/u/129932517?v=4" width="150px">](https://github.com/Jihye511)|[<img src="https://avatars.githubusercontent.com/u/124170300?v=4" width="150px;" alt=""/>](https://github.com/oz115) |[<img src="https://avatars.githubusercontent.com/u/87516405?v=4" width="150px" >](https://github.com/yedamhy)
+|:---:|:---:|:---:|
+|[이지혜](https://github.com/Jihye511) |[이영주](https://github.com/oz115) |[현예닮](https://github.com/yedamhy)|
+|👑 **PM** 정보융합학부 20 | 정보융합학부 20| 정보융합학부 20 |
 
-All non commercial themes and templates found on Audain Designs are 100% free and covered under the [Creative Commons Attribution 3.0 License (CC BY 3.0)](http://creativecommons.org/licenses/by/3.0/)
+<br>
 
-**Other Options**
-
-If you’d like to use this bootstrap template without the attribution link, you can choose to purchase the commercial license: [Purchase Launch](http://bit.ly/2kAgb8K)
-
-#Features
-
-- Landing Page Template
-- Easy to Customize
-- Bootstrap
-- Google Fonts
-- FontAwesome Icons
-
-#Credits
-
-All Images are for demo purposes only and not included in the template, sources are included & all other sources and credits are included in the documentation.
-
-- UI Faces
-- Google Web Fonts
-- FontAwesome Icon
-- jQuery
-- Bootstrap
-
----
-
-10 Feb 17
-- Readme Updated
+## 💻 3. Introduce Our Project
+### 1) Project Name
+**너 또 돈 써?**
