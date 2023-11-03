@@ -1,66 +1,38 @@
-const http = require('http');
-const fs = require('fs').promises;
-const path = require('path');
-const url = require('url');
 const express = require('express');
-
-const app = express();
 const nunjucks = require('nunjucks');
 const session = require('express-session');
+const path = require('path');
+const authRouter = require('./routes/auth'); // auth 라우터를 가져옵니다.
 
-app.set('view engine','html');
-nunjucks.configure('views',{
-    express:app,
-})
+const app = express();
 
+// Nunjucks 템플릿 엔진 설정
+app.set('view engine', 'html');
+nunjucks.configure('views', {
+    express: app,
+    autoescape: true
+});
+
+// 정적 파일 제공을 위한 설정
+app.use(express.static(path.join(__dirname, 'assets')));
+
+// 세션 설정
 app.use(session({
-    resave:true,
-    secret:'ras',
-    secure:false,
-    saveUninitialized:false,
-}))//세션을 설정할 때 쿠키가 생성된다.&&req session의 값도 생성해준다. 어느 라우터든 req session값이 존재하게 된다.
+    resave: true,
+    saveUninitialized: false,
+    secret: 'ras',
+    secure: false
+}));
 
-const kakao = {
-    clientID:'5baab2d43a20bfe012d6a7adafdbd477',
-    clientSecret:'\t3vXooJjwRZeKlqnHuqqcrYuhQ1hjuR3J',
-    redirectUrl: 'http://localhost:8080/auth/kakao/callback'
-}
+// 라우터 설정
+app.use('/auth', authRouter); // auth 경로 설정
 
-//profile account_email
-app.get('/auth/kakao',(req,res)=>{
-    const kakaoAuthURL = `https://kauth.kakao.com/oauth/authorize?client_id=${kakao.clientID}&redirect_url=${kakao.redirectUrl}&response_type=code&scope=profile,account_email`;
-    res.redirect(kakaoAuthURL);
-})
+// 메인 페이지
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'assets', 'index.html'));
+});
 
-http.createServer(async (req, res) => {
-    try {
-        // URL에서 요청된 경로를 파싱합니다.
-        const reqPath = url.parse(req.url).pathname;
-        // 루트 경로('/')의 요청을 'index.html'로 매핑합니다.
-        const filePath = path.join(__dirname, reqPath === '/' ? 'index.html' : reqPath);
-        const ext = path.extname(filePath);
-
-        let contentType = 'text/html';
-        // 파일 확장자에 따라 Content-Type을 결정합니다.
-        switch (ext) {
-            case '.css':
-                contentType = 'text/css';
-                break;
-            case '.js':
-                contentType = 'text/javascript';
-                break;
-            // 필요한 다른 MIME 타입을 추가할 수 있습니다.
-        }
-
-        const data = await fs.readFile(filePath);
-        res.writeHead(200, { 'Content-Type': `${contentType}; charset=utf-8` });
-        res.end(data);
-    } catch (err) {
-        console.error(err);
-        res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
-        res.end('Not found');
-    }
-})
-    .listen(8080, () => {
-        console.log('8080번 포트에서 서버 대기 중입니다.');
-    });
+// 서버 시작
+app.listen(8080, () => {
+    console.log('8080번 포트에서 서버 대기 중입니다.');
+});
