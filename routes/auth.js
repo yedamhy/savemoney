@@ -1,3 +1,4 @@
+// 인증 관련 라우팅
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');

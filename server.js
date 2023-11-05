@@ -8,7 +8,7 @@ const app = express();
 
 // Nunjucks 템플릿 엔진 설정
 app.set('view engine', 'html');
-nunjucks.configure('views', {
+nunjucks.configure('assets', {
     express: app,
     autoescape: true
 });
