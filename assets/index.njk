@@ -156,13 +156,17 @@
             <!--sidebar-->
             <div class="content col-md-4 col-sm-12 col-xs-12">
                 <div class="section-block summary">
-                    <h1 class="section-title">LAUNCH</h1>
+                    <h1 class="section-title">{{ nickname }}</h1>
                     <div class="profile-contents">
-                        <h2 class="position">Sky Rocketing Your Funding Campaign</h2>
-                        <img src="img/profile-img.jpg" class="profile-image img responsive" alt="John Doe">
-                        <a href="/auth/kakao" class="btn btn-contact">
-                            <img src="img/kakao_login_medium_narrow.png" alt="Kakao Login" />
-                        </a>
+                        <img src="{{ user_image }}" class="profile-image img responsive" alt="로그인 해주세요">
+                        {% if loggedIn %}
+                            <h2 class = "user-ranking">{{ranking}}</h2>
+                        {% endif %}
+                        {% if not loggedIn %}
+                            <a href="/auth/kakao" class="btn btn-contact">
+                                <img src="img/kakao_login_medium_narrow.png" alt="Kakao Login" />
+                            </a>
+                        {% endif %}
 
                     </div>
                 </div>

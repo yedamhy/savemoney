@@ -51,16 +51,5 @@ exports.handleKakaoCallback = async (req, res) => {
     req.session.kakao = user.data;
     console.log(req.session.kakao);
     //res.send('로그인 성공!');
-    res.redirect('/auth/info');
-};
-
-exports.displayUserInfo = (req, res) => {
-    // 사용자 정보 페이지 로직
-    const { nickname, thumbnail_image } = req.session.kakao.properties;
-    res.render('info', {
-        nickname,
-        thumbnail_image
-    });
-    console.log(nickname);
-    console.log(thumbnail_image);
+    res.redirect('/');
 };
