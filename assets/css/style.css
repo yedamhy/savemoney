@@ -383,12 +383,12 @@ a {
 	text-align: center;
 }
 .btn.btn-contact {
-	background-color: #85AD90;
+	/*background-color: #85AD90;
 	color: #fff;
-	font-weight:700;
+	font-weight:700;*/
 }
 .btn.btn-contact:hover, .btn.btn-contact:focus {
-	background-color: #779A81;
+	/*background-color: #779A81;*/
 }
 .btn.btn-contact i.fa {
 	margin-right:10px;
