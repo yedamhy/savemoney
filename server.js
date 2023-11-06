@@ -2,7 +2,7 @@ const express = require('express');
 const nunjucks = require('nunjucks');
 const session = require('express-session');
 const path = require('path');
-const authRouter = require('./routes/auth'); // auth 라우터를 가져옵니다.
+const authRouter = require('./login/routes/auth'); // auth 라우터를 가져옵니다.
 
 const app = express();
 
@@ -59,5 +59,5 @@ app.get('/', (req, res) => {
 
 // 서버 시작
 app.listen(8080, () => {
-    console.log('8080번 포트에서 서버 대기 중입니다.');
+    console.log('8080번 포트에서 서버 대기 중 입니다.');
 });

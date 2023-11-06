@@ -12,10 +12,6 @@
     <link rel="shortcut icon" href="favicon.ico">
     <title>Launch - HTML5 Crowdfunding Profile Template</title>
 
-    <!--kakao login-->
-    <a href="/auth/kakao">카카오로그인</a>
-    <a href="/auth/info">회원정보</a>
-
     <!-- Gobal CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
@@ -161,6 +157,7 @@
                         <img src="{{ user_image }}" class="profile-image img responsive" alt="로그인 해주세요">
                         {% if loggedIn %}
                             <h2 class = "user-ranking">{{ranking}}</h2>
+                            <a href = "/auth/logout"> 로그아웃 하기</a>
                         {% endif %}
                         {% if not loggedIn %}
                             <a href="/auth/kakao" class="btn btn-contact">
