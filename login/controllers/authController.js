@@ -6,21 +6,17 @@ const kakaoConfig = require('../config/kakao');
 
 exports.redirectToKakao = (req, res) => {
     // 카카오 인증 페이지로 리다이렉트하는 로직
-    const kakaoAuthURL = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoConfig.clientID}&redirect_uri=${kakaoConfig.redirectUri}&response_type=code&scope=profile_nickname,profile_image`;
+    const kakaoAuthURL = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoConfig.clientID
+    }&redirect_uri=${kakaoConfig.redirectUri}&response_type=code&scope=profile_nickname,profile_image`;
     res.redirect(kakaoAuthURL);
 };
 
-exports.logoutFromKakao = async (req, res) => {
-    delete req.session.kakao;
-    res.redirect('/?msg=logoutsuccess');
-}
-
 exports.handleKakaoCallback = async (req, res) => {
     // 카카오 로그인 콜백 처리 로직
-    let token;
+    let tokenResponse;
     try {
         // 토큰 요청
-        token = await axios({
+        tokenResponse  = await axios({
             method: 'POST',
             url: 'https://kauth.kakao.com/oauth/token',
             headers: {
@@ -34,27 +30,91 @@ exports.handleKakaoCallback = async (req, res) => {
                 code: req.query.code
             })
         });
+
+        // 토큰을 세션에 저장
+        const { access_token, refresh_token } = tokenResponse.data;
+        req.session.kakaoToken = { access_token, refresh_token };
+
     } catch (err) {
         return res.status(500).json(err.data);
     }
 
-    let user;
+    let userResponse;
 
     try {
         // 사용자 정보 요청
-        user = await axios({
+        userResponse = await axios({
             method: 'GET',
             url: 'https://kapi.kakao.com/v2/user/me',
             headers: {
-                Authorization: `Bearer ${token.data.access_token}`
+                Authorization: `Bearer ${tokenResponse .data.access_token}`
             }
         });
+
+        // 사용자 정보를 세션에 저장
+        req.session.kakaoUser = userResponse.data;
+
     } catch (err) {
         return res.status(500).json(err.data);
     }
 
-    req.session.kakao = user.data;
+    req.session.kakao = userResponse.data;
     console.log(req.session.kakao);
     //res.send('로그인 성공!');
     res.redirect('/');
+};
+
+// 사용자 정보
+exports.renderHomePage = async(req, res) => {
+    let displayNickname = '로그인 해주세요';
+    let displayImage = 'img/profile-img.jpg';
+    let loggedIn = false;
+    let ranking = "Bronze";
+    if (req.session.kakao) {
+        // 세션에 카카오 정보가 있으면 템플릿 변수로 전달
+        displayNickname = req.session.kakao.properties.nickname + '님';
+        displayImage = req.session.kakao.properties.thumbnail_image;
+        loggedIn = true; // 로그인 상태를 true로 설정
+    }
+
+    res.render('index', {
+        nickname: displayNickname,
+        user_image: displayImage,
+        loggedIn: loggedIn,
+        ranking: ranking
+    });
+};
+
+// 로그아웃 기능
+exports.logoutFromKakao = async (req, res) => {
+    delete req.session.kakao;
+    res.redirect('/?msg=logoutsuccess');
+}
+
+// 회원 탈퇴 기능
+exports.unlinkKakaoAccount = async (req, res) => {
+    if (!req.session.kakao) {
+        return res.status(401).send('로그인 되어있지 않습니다.');
+    }
+
+    try {
+        // 카카오 회원 탈퇴 API 호출
+        await axios({
+            method: 'POST',
+            url: 'https://kapi.kakao.com/v1/user/unlink',
+            headers: {
+                'Authorization': `Bearer ${req.session.kakaoToken.access_token}`
+            }
+        });
+
+        // 세션에서 사용자 정보 삭제
+        req.session.destroy();
+
+        //res.send('회원 탈퇴 처리가 완료되었습니다.');
+        res.redirect('/?msg=inlinkSuccess');
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('회원 탈퇴 처리 중 오류가 발생했습니다.');
+    }
 };

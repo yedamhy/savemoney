@@ -158,6 +158,15 @@
                         {% if loggedIn %}
                             <h2 class = "user-ranking">{{ranking}}</h2>
                             <a href = "/auth/logout"> 로그아웃 하기</a>
+                            <p>   </p>
+                            <a href="/auth/unlink" class="btn_unlink" onclick="return confirmUnlink();">회원 탈퇴</a>
+
+                            <script>
+                                function confirmUnlink() {
+                                    return confirm("회원 탈퇴를 진행하시겠습니까?");
+                                }
+                            </script>
+
                         {% endif %}
                         {% if not loggedIn %}
                             <a href="/auth/kakao" class="btn btn-contact">

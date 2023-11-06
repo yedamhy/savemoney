@@ -6,5 +6,7 @@ const authController = require('../controllers/authController');
 router.get('/kakao', authController.redirectToKakao);
 router.get('/kakao/callback', authController.handleKakaoCallback);
 router.get('/logout', authController.logoutFromKakao);
+router.get('/unlink', authController.unlinkKakaoAccount);
+
 
 module.exports = router;
