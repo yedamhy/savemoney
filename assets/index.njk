@@ -106,6 +106,19 @@
                 <!--/signup-->
                 <!--tabs-->
                 <div class="section-block">
+                    <div>
+                        <textarea id="postInput" rows="5" placeholder="포스트 입력"></textarea> 
+                        <br>
+                        <button onclick="addPost()">포스트 추가</button>
+                    </div>
+                </div>
+
+                <!-- 포스팅 목록 올라감 -->
+                <ul id="postList">
+                        <!-- 포스팅 목록 -->
+                </ul>
+              
+                <div class="section-block">
                     <div class="section-tabs">
                         <ul class="nav nav-tabs" role="tablist">
                             <li role="presentation" class="active"><a href="#about" aria-controls="about" role="tab" data-toggle="tab">About</a></li>
@@ -147,6 +160,7 @@
                     </div>
                 </div>
             </div>
+          
             <!--/tabs-->
             <!--/main content-->
             <!--sidebar-->
@@ -242,6 +256,8 @@
 <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
 
 <!-- Template JS -->
+<script type="text/javascript" src="js/scripts.js"></script>
 <script type="text/javascript" src="assets/js/main.js"></script>
+
 </body>
 </html>
