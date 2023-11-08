@@ -15,7 +15,7 @@ body {
 p {
 	color:#A7A7A7;
 }
-a { 
+a {
 	color:#85AD90;
 }
 
@@ -28,11 +28,13 @@ a {
 .goal-summary {
 	padding: 0px 40px;
 }
-.goal-summary .backers, .goal-summary .funded, .goal-summary .time-left, .goal-summary .reminder {
-	margin: 10px 20px 10px 0px;
+.goal-summary .backers {
+	font-size: 50px;
+	/* margin: 10px 20px 10px 0px; */
+	vertical-align: middle;
 	padding-right: 20px;
 	display: inline-block;
-	border-right: 1px solid rgba(255, 255, 255, 0.39);
+	/* border-right: 1px solid rgba(255, 255, 255, 0.39); */
 }
 .goal-summary .reminder.last {
 	border:0;
@@ -40,9 +42,9 @@ a {
 .goal-summary .backers h3, .goal-summary .funded h3, .goal-summary .time-left h3 {
 	background-color:#fff;
 	padding:5px;
-	margin:0px 0px 5px 0px;
+	margin:0px 0px 0px 0px;
 	display:table;
-	border-radius:4px;
+	border-radius:10px;
 	color:#85AD90;
 }
 .goal-summary .backers span, .goal-summary .funded span, .goal-summary .time-left span {
@@ -80,10 +82,10 @@ a {
 	margin-bottom:30px;
 }
 .section-block.summary {
-    background-color: #99DEAB;
+	background-color: #99DEAB;
 }
 .section-block.summary h1 {
-    color: #fff;
+	color: #fff;
 	display:block;
 	text-align:center;
 }
@@ -113,7 +115,7 @@ a {
 /*-Profile Summary-*/
 .profile-contents {
 	margin: 0 auto;
-    text-align: center;
+	text-align: center;
 }
 .profile-contents h2 {
 	color:#FFF;
@@ -225,21 +227,21 @@ a {
 	margin: 10px 0px 10px 0px;
 }
 
-/*-Rewards-*/
-.reward-block {
+/*-mypage-*/
+.mypage-block {
 	position:relative;
 	background-color: #fff;
 	border-radius: 4px;
 	padding: 20px;
 	margin-bottom:10px;
 }
-.reward-block:hover {
+.mypage-block:hover {
 	background-color: #DCF7E3;
 }
-.reward-block.last {
+.mypage-block.last {
 	margin-bottom:0;
 }
-.reward-block h3 {
+.mypage-block h3 {
 	background: #99DEAB;
 	color: #fff;
 	font-size: 15px;
@@ -249,21 +251,21 @@ a {
 	display: table;
 	border-radius: 4px;
 }
-.reward-block h2 {
+.mypage-block h2 {
 	font-size: 20px;
 	font-weight: 300;
 	color: #99DEAB;
 	margin: 15px 0px;
 }
-.reward-block i.fa {
+.mypage-block i.fa {
 	color:#99DEAB;
 }
-.reward-block span {
+.mypage-block span {
 	margin-bottom: 10px;
 	display: block;
 	color: #A7A7A7;
 }
-.reward-block.popular:after {
+.mypage-block.popular:after {
 	position: absolute;
 	top: 10px;
 	right: 10px;
@@ -294,13 +296,13 @@ a {
 @media (max-width: 767px) {
 	.signup-input {
 		width: 75%;
-		max-width: 100%%;
+		max-width: 100%;
 	}
 }
 @media (max-width: 480px) {
 	.signup-input {
 		width: 100%;
-		max-width: 100%%;
+		max-width: 100%;
 	}
 	.sign-up-form .btn.btn-signup {
 		margin:10px 0px;
@@ -362,16 +364,17 @@ a {
 	font-weight: 600;
 	padding: 10px 25px;
 }
-.btn.btn-launch:hover, .btn.btn-launch:focus,.btn.btn-reward, .btn.btn-reward:hover, .btn.btn-reward :focus {
+.btn.btn-launch:hover, .btn.btn-launch:focus,.btn.btn-mypage, .btn.btn-mypage:hover, .btn.btn-mypage :focus {
 	background-color:#85AD90;
 	box-shadow:none;
+	width: 260px;
 }
-.btn.btn-reward {
+.btn.btn-mypage {
 	background-color: #99DEAB;
-    color: #FFF;
-    font-size: 14px;
-    font-weight: 600;
-    padding: 5px 15px;
+	color: #FFF;
+	font-size: 14px;
+	font-weight: 600;
+	padding: 5px 15px;
 }
 .btn.btn-signup {
 	background-color: #99DEAB;
@@ -383,12 +386,13 @@ a {
 	text-align: center;
 }
 .btn.btn-contact {
-	/*background-color: #85AD90;
+	/* margin-top: 30px; */
+	background-color: #85AD90;
 	color: #fff;
-	font-weight:700;*/
+	font-weight:700;
 }
 .btn.btn-contact:hover, .btn.btn-contact:focus {
-	/*background-color: #779A81;*/
+	background-color: #779A81;
 }
 .btn.btn-contact i.fa {
 	margin-right:10px;
@@ -445,4 +449,4 @@ a {
 /*-Overrides-*/
 .btn, input{
 	outline:none;
-	{
+}
