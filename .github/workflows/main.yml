@@ -26,7 +26,7 @@ jobs:
         uses: zxyle/publish-gae-action@master
         with:
           service_account_email: ${{servicemangement@savemoney-404206.iam.gserviceaccount.com}}
-          service_account_key: ${{85d5d55e8b491cef8af623a2fa7c04edd14416ac}}
+          service_account_key: ${{secrets.YOUR_SECRET_KEY}}
           project_id: ${{savemoney-404206 }}
           # An optional variables parameter can be used
           # gae_variables: ${{ secrets.GAE_VARIABLES }}
