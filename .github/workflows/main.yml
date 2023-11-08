@@ -25,11 +25,11 @@ jobs:
       - name: Initialize Google Cloud SDK
         uses: zxyle/publish-gae-action@master
         with:
-          service_account_email: ${{servicemangement@savemoney-404206.iam.gserviceaccount.com}}
-          service_account_key: ${{85d5d55e8b491cef8af623a2fa7c04edd14416ac}}
-          project_id: ${{savemoney-404206 }}
+          service_account_email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
+          service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+          project_id: ${{ secrets.PROJECT_ID }}
           # An optional variables parameter can be used
-          # gae_variables: ${{ secrets.GAE_VARIABLES }}
+          gae_variables: ${{ secrets.GAE_VARIABLES }}
 
       - name: Publish app to Google App Engine
         run: |
