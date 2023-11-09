@@ -32,6 +32,9 @@ app.use('/auth', authRouter); // auth 경로 설정
 app.get('/', authController.renderHomePage);
 
 // 서버 시작
-app.listen(8080, () => {
-    console.log('8080번 포트에서 서버 대기 중 입니다.');
+// 서버 시작
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+    console.log(`${PORT}번 포트에서 서버 대기 중입니다.`);
 });
+
