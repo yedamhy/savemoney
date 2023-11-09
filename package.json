@@ -2,7 +2,7 @@
   "name": "23-teampjt-webgurae",
   "version": "1.0.0",
   "description": "<br>",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
