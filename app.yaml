@@ -1,0 +1,12 @@
+runtime: nodejs18  # 사용하는 Node.js의 버전
+env: standard      # 환경 설정 (standard 또는 flexible)
+instance_class: F1 # 인스턴스 클래스
+
+automatic_scaling: # 자동 스케일링 옵션
+  target_cpu_utilization: 0.6
+  min_instances: 1
+  max_instances: 5
+
+handlers:          # HTTP 요청 핸들러
+- url: /.*
+  script: auto
