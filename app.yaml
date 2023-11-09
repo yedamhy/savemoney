@@ -1,13 +1,12 @@
-runtime: nodejs18  # 사용하는 Node.js의 버전
-env: standard      # 환경 설정 (standard 또는 flexible)
-instance_class: F1 # 인스턴스 클래스
-service_account: 'admin-939@savemoney-404206.iam.gserviceaccount.com'
+runtime: nodejs18  # 여기서는 사용할 Node.js의 버전을 지정합니다.
+env: standard      # 실행 환경을 선택합니다. (standard 또는 flexible)
+instance_class: F1 # 인스턴스 클래스를 지정합니다. (예: F1, B1, B2 등)
 
-automatic_scaling: # 자동 스케일링 옵션
+automatic_scaling: # 자동 스케일링 설정을 합니다.
   target_cpu_utilization: 0.6
   min_instances: 1
   max_instances: 5
 
-handlers:          # HTTP 요청 핸들러
+handlers:          # URL 핸들러 설정입니다.
 - url: /.*
   script: auto
