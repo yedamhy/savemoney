@@ -18,12 +18,6 @@ Author:
 Justin Audain - Audain Designs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
 
-Contact:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-web:http://themes.audaindesigns.com
-email:info@audaindesigns.com
-twitter:@audaindesigns
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
 
 License:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
