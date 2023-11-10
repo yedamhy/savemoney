@@ -23,7 +23,9 @@ jobs:
 
     - name: Deploy to App Engine
       run: |
-        gcloud auth activate-service-account ${{ secrets.GCP_SA_EMAIL }}
+        echo "$GCP_SA_KEY" > /tmp/key.json
+        gcloud auth activate-service-account --key-file=/tmp/key.json
         gcloud config set project ${{ secrets.PROJECT_ID }}
-        gcloud -q app deploy app.yaml --promote      
-        #gcloud app deploy
+        gcloud -q app deploy app.yaml --promote
+      env:
+        GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
