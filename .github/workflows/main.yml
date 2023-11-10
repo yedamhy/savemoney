@@ -22,7 +22,7 @@ jobs:
         export_default_credentials: true
 
     - name: Deploy to App Engine
-      run: 
+      run: |
         gcloud auth activate-service-account ${{ secrets.GCP_SA_EMAIL }}
         gcloud config set project ${{ secrets.PROJECT_ID }}
         gcloud -q app deploy app.yaml --promote      
