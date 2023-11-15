@@ -36,6 +36,3 @@ jobs:
 
         # Compute Engine 인스턴스에 접속하여 배포 스크립트 실행
         ssh -i /tmp/private_key -o StrictHostKeyChecking=no ${{ secrets.GCE_USER }}@${{ secrets.GCE_INSTANCE_IP }} 'bash -s' < deploy_script.sh
-      env:
-        GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
-        MY_DB_USER: ${{ secrets.GCP_SA_EMAIL }}
