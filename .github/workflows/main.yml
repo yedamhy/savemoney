@@ -29,6 +29,10 @@ jobs:
         gcloud auth activate-service-account ${{ secrets.GCP_SA_EMAIL }} --key-file=/tmp/gcp-sa-key.json
         gcloud config set project ${{ secrets.PROJECT_ID }}
 
+    - name: Check service account key file
+      run: |
+        head -n 1 /tmp/gcp-sa-key.json # 파일의 첫 줄만 출력
+
      
     - name: Deploy to Compute Engine
       run: |
