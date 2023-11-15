@@ -17,14 +17,14 @@ jobs:
       uses: google-github-actions/setup-gcloud@v0
       with:
         service_account_email: ${{ secrets.GCP_SA_EMAIL }}
-        service_account_key: ${{ secrets.GCP_SA_KEY }}
-        project_id: ${{ secrets.GCP_PROJECT_ID }}
-
-    - name: Authorize gcloud and set config
+        project_id: ${{ secrets.PROJECT_ID }}
+  
+    - name: Authenticate with Google Cloud
       run: |
-        gcloud auth activate-service-account ${{ secrets.GCP_SA_EMAIL }} --key-file=${{ secrets.GCP_SA_KEY_FILE }}
+        echo "${{ secrets.GCP_SA_KEY }}" | base64 -d > /tmp/gcp-sa-key.json
+        gcloud auth activate-service-account ${{ secrets.GCP_SA_EMAIL }} --key-file=/tmp/gcp-sa-key.json
         gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
-
+     
     - name: Deploy to Compute Engine
       run: |
         # SSH 키 설정
@@ -33,11 +33,3 @@ jobs:
 
         # Compute Engine 인스턴스에 접속하여 배포 스크립트 실행
         ssh -i /tmp/private_key -o StrictHostKeyChecking=no ${{ secrets.GCE_USER }}@${{ secrets.GCE_INSTANCE_IP }} 'bash -s' < deploy_script.sh
-
-
-    - name: Authorize gcloud and set config
-      run: |
-        gcloud auth activate-service-account ${{ secrets.GCP_SA_EMAIL }} --key-file=${{ secrets.GCP_SA_KEY }}
-        gcloud config set project ${{ secrets.PROJECT_ID }}
-
-        
