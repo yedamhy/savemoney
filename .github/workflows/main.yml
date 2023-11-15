@@ -27,12 +27,15 @@ jobs:
         echo "MY_DATABASE=${{ secrets.MY_DATABASE }}" >> $GITHUB_ENV
 
 
-    - name: Deploy to App Engine
+   # Compute Engine에 배포하는 새로운 단계
+    - name: Deploy to Compute Engine
       run: |
-        echo "$GCP_SA_KEY" | base64 -d > /tmp/key.json
-        gcloud auth activate-service-account --key-file=/tmp/key.json
-        gcloud config set project ${{ secrets.PROJECT_ID }}
-        gcloud -q app deploy app.yaml --promote
+        # SSH 키 설정
+        echo "${{ secrets.GCE_SSH_PRIVATE_KEY }}" > /tmp/private_key
+        chmod 600 /tmp/private_key
+
+        # Compute Engine 인스턴스에 접속하여 배포 스크립트 실행
+        ssh -i /tmp/private_key -o StrictHostKeyChecking=no ${{ secrets.GCE_USER }}@${{ secrets.GCE_INSTANCE_IP }} 'bash -s' < deploy_script.sh
       env:
         GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
         MY_DB_USER: ${{ secrets.GCP_SA_EMAIL }}
