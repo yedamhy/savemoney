@@ -3,37 +3,15 @@ name: Deploy to Google Compute Engine
 on:
   push:
     branches:
-      - main  # main 브랜치에 push될 때 트리거됩니다.
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up Google Cloud SDK
-      uses: google-github-actions/setup-gcloud@v0
-      with:
-        service_account_email: ${{ secrets.GCP_SA_EMAIL }}
-        project_id: ${{ secrets.PROJECT_ID }}
-  
-    - name: Authenticate with Google Cloud
-      run: |
-        echo "${{ secrets.GCP_SA_KEY }}" | base64 -d > /tmp/gcp-sa-key.json
-        ls -l /tmp/gcp-sa-key.json  # 파일 존재 여부 확인
-    
-    - name: Activate gcloud service account
-      run: |
-        gcloud auth activate-service-account ${{ secrets.GCP_SA_EMAIL }} --key-file=/tmp/gcp-sa-key.json
-        gcloud config set project ${{ secrets.PROJECT_ID }}
-
-    - name: Check service account key file
-      run: |
-        head -n 1 /tmp/gcp-sa-key.json # 파일의 첫 줄만 출력
-
-     
     - name: Deploy to Compute Engine
       run: |
         # SSH 키 설정
@@ -41,4 +19,4 @@ jobs:
         chmod 600 /tmp/private_key
 
         # Compute Engine 인스턴스에 접속하여 배포 스크립트 실행
-        ssh -i /tmp/private_key -o StrictHostKeyChecking=no ${{ secrets.GCE_USER }}@${{ secrets.GCE_INSTANCE_IP }} 'bash -s' < deploy_script.sh
+        ssh -i /tmp/private_key -o StrictHostKeyChecking=no username@compute-instance-ip 'bash -s' < deploy_script.sh
