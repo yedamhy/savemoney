@@ -39,4 +39,3 @@ jobs:
       env:
         GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
         MY_DB_USER: ${{ secrets.GCP_SA_EMAIL }}
-        MY_DATABASE: ${{ secrets.MY_DATABASE }}
