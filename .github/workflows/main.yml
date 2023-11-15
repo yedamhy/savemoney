@@ -15,7 +15,7 @@ jobs:
     - name: Deploy to Compute Engine
       run: |
         # SSH 키 설정
-        echo "${{ secrets.GCP_SA_KEY }}" > /tmp/private_key
+        echo "${{ secrets.GCP_SA_KEY }}" | base64 --decode > /tmp/private_key
         chmod 600 /tmp/private_key
 
         # Compute Engine 인스턴스에 접속하여 배포 스크립트 실행
