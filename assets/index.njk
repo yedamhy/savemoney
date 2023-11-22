@@ -10,7 +10,7 @@
 	<meta name="keywords" content="HTML5 Crowdfunding Profile Template">
 	<meta name="author" content="Audain Designs">
 	<link rel="shortcut icon" href="favicon.ico">
-	<title>Launch - HTML5 Crowdfunding Profile Template</title>
+	<title>SAVE MONEY</title>
 
 	<!-- Gobal CSS -->
 	<link href="css/bootstrap.min.css" rel="stylesheet">
@@ -43,52 +43,32 @@
 </head>
 <body>
 	<!--header-->
-	<header class="header">
-		<div class="container">
-			<div class="row">
-				<div class="goal-summary pull-left">
-					<div style="background-color: white; border-radius: 30px 30px 30px 30px">
-						<div class = "backers">
-							<img src="img/logo_web.png" alt="로고"c width="180" height="130">
-						</div>
-						<div class="backers">
-							<!-- <img src="img/logo_web.png" alt="로고"> -->
-							<h3 style="font-size: 50px; font-weight: bold;" >너 또 돈 써?</h3>
+	<div class = "main-header">
+		<header class="header">
+			<div class="container">
+				<div class="row">
+					<div class="goal-summary pull-left">
+						<div style="background-color: white; border-radius: 30px 30px 30px 30px">
+							<div style = "width: 160px" class = "backers">
+								<img src="img/logo_web.png" alt="로고"c width="160" height="130">
+							</div>
+							<div class="backers">
+								<img src="img/title.png" alt="로고"> 
+								<!-- <h3 style="font-size: 50px; font-weight: bold;" >너 또 돈 써?</h3> -->
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</header>
+		</header>
+	</div>
 	<!--/header-->
 	<!--main content-->
 	<div class="main-content">
 		<div class="container">
 			<div class="row">
 				<div class="content col-md-8 col-sm-12 col-xs-12">
-					<div class="section-block">
-						<div class="funding-meta">
-							<h1>LAUNCH INTO SUCCESS</h1>
-							<span class="type-meta"><i class="fa fa-user"></i> Jonathan Doe</span>
-							<span class="type-meta"><i class="fa fa-tag"></i> <a href="#">crowdfunding</a>, <a href="#">launch</a> </span>
-							<!--img src="assets/img/image-heartbeat.jpg" class="img-responsive" alt="launch HTML5 Crowdfunding"-->
-							<div class="video-frame">
-								<iframe src="https://player.vimeo.com/video/67938315" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-							</div>
-							<p>Launch will enable you be in run  your own crowdfunding campaign, and be in complete control from concept to crowdfunding to launch.</p>
-							<h2>$10,350</h2>
-							<span class="contribution">raised by <strong>5,234</strong> ready to launch</span>
-							<div class="progress">
-								<div class="progress-bar" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%;">
-									<span class="sr-only">45% Complete</span>
-								</div>
-							</div>
-							<span class="goal-progress"><strong>45%</strong> of $23,000 raised</span>
-						</div>
-						<span class="count-down"><strong>27</strong>Days to go.</span>
-						<a href="#" class="btn btn-launch">HELP LAUNCH</a>
-					</div>
-					<!--signup-->
+					<!--tabs-->
 					<div class="section-block signup">
 						<div class="sign-up-form">
 							<form>
@@ -97,13 +77,31 @@
 							</form>
 						</div>
 					</div>
-					<!--/signup-->
-					<!--tabs-->
 					<div class="section-block">
-						<div>
-							<textarea id="postInput" rows="5" placeholder="포스트 입력"></textarea> 
-							<br>
-							<button onclick="addPost()">포스트 추가</button>
+						<div class ="posting">
+							<button id="add-post-button" onclick="openPostModal()">+</button>
+
+							<div id="post-modal" class="modal">
+								<div class="modal-content">
+									<span class="close" onclick="closePostModal()">&times;</span>
+									<textarea id="post-content" placeholder="포스트 내용을 입력하세요..."></textarea>
+									<button onclick="savePost()">저장</button>
+								</div>
+							</div>
+
+							
+							<div id="posts-container">
+									<!-- 포스팅 목록 표시 됨 -->
+							</div>
+							<div id="comment-modal" class="modal">
+								<div class="modal-content">
+									<span class="close" onclick="closeCommentModal()">&times;</span>
+									<div id="post-content-container"></div>
+									<textarea id="comment-content" placeholder="댓글을 입력하세요..."></textarea>
+									<button onclick="saveComment()">댓글 저장</button>
+									<div id="comments-container"></div>
+								</div>
+							</div>
 						</div>
 					</div>
 
@@ -112,47 +110,7 @@
 							<!-- 포스팅 목록 -->
 					</ul>
 
-					<div class="section-block">
-						<div class="section-tabs">
-							<ul class="nav nav-tabs" role="tablist">
-								<li role="presentation" class="active"><a href="#about" aria-controls="about" role="tab" data-toggle="tab">About</a></li>
-								<li role="presentation"><a href="#updates" aria-controls="updates" role="tab" data-toggle="tab">Updates</a></li>
-							</ul>
-						</div>
-					</div>
-					<!--/tabs-->
-					<!--tab panes-->
-					<div class="section-block">
-						<div class="tab-content">
-							<div role="tabpanel" class="tab-pane active" id="about">
-								<div class="about-information">
-									<h1 class="section-title">ABOUT LAUNCH</h1>
-								</div>
-							</div>
-							<div role="tabpanel" class="tab-pane" id="updates">
-								<div class="update-information">
-								<h1 class="section-title">UPDATES</h1>
-									<!--update items-->
-									<div class="update-post">
-										<h4 class="update-title">We've started shipping!</h4>
-										<span class="update-date">Posted 2 days ago</span>
-										<p>Suspendisse luctus at massa sit amet bibendum. Cras commodo congue urna, vel dictum velit bibendum eget. Vestibulum quis risus euismod, facilisis lorem nec, dapibus leo. Quisque sodales eget dolor iaculis dapibus. Vivamus sit amet lacus ipsum. Nullam varius lobortis neque, et efficitur lacus. Quisque dictum tellus nec mi luctus imperdiet. Morbi vel aliquet velit, accumsan dapibus urna. Cras ligula orci, suscipit id eros non, rhoncus efficitur nisi.</p>
-									</div>
-									<div class="update-post">
-										<h4 class="update-title">Launch begins manufacturing </h4>
-										<span class="update-date">Posted 9 days ago</span>
-										<p>Suspendisse luctus at massa sit amet bibendum. Cras commodo congue urna, vel dictum velit bibendum eget. Vestibulum quis risus euismod, facilisis lorem nec, dapibus leo. Quisque sodales eget dolor iaculis dapibus. Vivamus sit amet lacus ipsum. Nullam varius lobortis neque, et efficitur lacus. Quisque dictum tellus nec mi luctus imperdiet. Morbi vel aliquet velit, accumsan dapibus urna. Cras ligula orci, suscipit id eros non, rhoncus efficitur nisi.</p>
-									</div>
-									<div class="update-post">
-										<h4 class="update-title">Designs have now been finalized</h4>
-										<span class="update-date">Posted 17 days ago</span>
-										<p>Suspendisse luctus at massa sit amet bibendum. Cras commodo congue urna, vel dictum velit bibendum eget. Vestibulum quis risus euismod, facilisis lorem nec, dapibus leo. Quisque sodales eget dolor iaculis dapibus. Vivamus sit amet lacus ipsum. Nullam varius lobortis neque, et efficitur lacus. Quisque dictum tellus nec mi luctus imperdiet. Morbi vel aliquet velit, accumsan dapibus urna. Cras ligula orci, suscipit id eros non, rhoncus efficitur nisi.</p>
-									</div>
-									<!--/update items-->
-								</div>
-							</div>
-						</div>
-					</div>
+					
 				</div>
 				<!--/tabs-->
 				<!--/main content-->
@@ -190,13 +148,14 @@
 							<!-- <span><i class="fa fa-users"></i> 180 backers</span> -->
 							<a href="mypage.html" class="btn btn-mypage">MY PAGE</a>
 						</div>
+					</div>
+					<div class = "section-block">
 						<div class="mypage-block">
 							<!-- 버튼이 mypage 버튼과 같은 디자인이라 그냥 btn-mypage라고 똑같이 썼음 -->
-							<a href="challenge.html" class="btn btn-mypage">10,000won challenge</a>
+							<a href="challenge.html" class="btn btn-mypage">CHALLENGE</a>
 						</div>
-
-						<!--/reward blocks-->
 					</div>
+
 				</div>
 				<!--/sidebar-->
 			</div>
@@ -205,8 +164,7 @@
 	<footer class="footer">
 	<div class="container">
 			<div class="row">
-				<!--This template has been created under the Creative Commons Attribution 3.0 License. Please keep the attribution link below when using this template in your own project, thank you.-->
-				<span class="copyright">Created by <a href="http://themes.audaindesigns.com" target="_blank">Audain Designs</a> for free use</span>
+                <span class="copyright">Created by Web-gurae</span>
 			</div>
 		</div>
 	</footer>
@@ -216,7 +174,6 @@
 	<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
 
 	<!-- Template JS -->
-	<script type="text/javascript" src="js/scripts.js"></script>
+	<script type="text/javascript" src="js/posting.js"></script>
 	<script type="text/javascript" src="assets/js/main.js"></script>
 </body>
-</html>
