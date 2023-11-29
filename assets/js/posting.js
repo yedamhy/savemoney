@@ -66,8 +66,7 @@ router.get('/getPosts',(req,res)=>{
     // res.status(200).json(sortedPosts);
 });
 
-// 간단한 배열을 데이터베이스로 사용
-// const postsDatabase = [];
+
 router.post("/savePost",async(req,res)=>{
     try{
         const post_id = req.params.post_id;
