@@ -4,8 +4,10 @@ const session = require('express-session');
 const path = require('path');
 const authRouter = require('./login/routes/auth');
 const authController = require("./login/controllers/authController"); // auth 라우터를 가져옵니다.
-
 const app = express();
+const cors = require('cors');
+
+const postRouter = require("./assets/js/posting");
 
 // Nunjucks 템플릿 엔진 설정
 app.set('view engine', 'njk');
@@ -13,10 +15,11 @@ nunjucks.configure('assets', {
     express: app,
     autoescape: true
 });
-
+app.use(express.json());
 // 정적 파일 제공을 위한 설정
 app.use(express.static(path.join(__dirname, 'assets')));
 
+app.use(cors());
 // 세션 설정
 app.use(session({
     resave: true,
@@ -27,9 +30,10 @@ app.use(session({
 
 // 라우터 설정
 app.use('/auth', authRouter); // auth 경로 설정
-
 // 로그인 후 사용자 정보 가져오는 설정
 app.get('/', authController.renderHomePage);
+//메인기본화면
+app.use('/',postRouter);
 
 // 서버 시작
 
@@ -40,3 +44,5 @@ app.listen(PORT, () => {
     console.log(`Environment variables: ${JSON.stringify(process.env)}`); // 환경 변수 전체를 출력합니다.
 
 });
+
+module.exports = app;
