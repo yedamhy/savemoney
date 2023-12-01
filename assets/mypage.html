@@ -12,7 +12,7 @@
     <meta name="keywords" content="HTML5 Crowdfunding Profile Template" />
     <meta name="author" content="Audain Designs" />
     <link rel="shortcut icon" href="favicon.ico" />
-    <title>MY PAGE</title>
+    <title>SAVE MONEY</title>
 
     <!-- Gobal CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet" />
@@ -39,7 +39,7 @@
     <![endif]-->
 
     <!--Google Analytics-->
-    <script>
+    <!-- <script>
       (function (i, s, o, g, r, a, m) {
         i["GoogleAnalyticsObject"] = r;
         (i[r] =
@@ -62,9 +62,80 @@
 
       ga("create", "UA-12345678-9", "auto");
       ga("send", "pageview");
-    </script>
-  </head>
+    </script> -->
+    <style>
+       .modal{
+            position:absolute;
+            display:none;
+            
+            justify-content: center;
+            top: 0px;
+            left:0;
 
+            width:100%;
+            height:800px;
+          }
+          /* 모달 내용 스타일 */
+        .modal-content {
+          width: 700px; /* 원하는 가로 크기로 조절 */
+          height: 420px; /*원하는 세로 크기로 조절 */
+          
+          max-width: 100%;
+          max-height: 80%;
+          padding: 20px;
+          overflow-y: auto;
+          }
+        .modal-post{
+          position:absolute;
+            display:none;
+            
+            justify-content: center;
+            top:0;
+            left:0;
+            
+
+            width:100%;
+            height:800px;
+        }
+        .modal-content-post{
+          width: 700px; /* 원하는 가로 크기로 조절 */
+          height: 650px; /* 원하는 세로 크기로 조절 */
+          max-width: 100%;
+          max-height: 80%;
+          padding: 20px;
+          overflow-y: auto;
+        }
+
+          /* 모달안에 테이블 스타일 */
+        .table {
+          width: 600px;
+          height: 500px; /* 원하는 세로 크기로 조절 */
+          max-width: 100%;
+          max-height: 80%;
+          padding: 20px;
+          left:20px;
+          right: 20px;
+          overflow-y: auto;
+        }
+        .price{
+          height: 30px;
+        }
+        .Incontent{
+          height: 400px;
+        }
+        
+        /* post-box는 스레드 중 한 게시글 */
+        /* 클릭 시 hover 효과 */
+        .post-box:hover {
+            background-color: #f9f9f9;
+        }
+
+        
+
+
+  
+    </style>
+  </head>
   <body>
     <!--header-->
     <div class="main-header">
@@ -82,12 +153,13 @@
                   <img
                     src="img/logo_web.png"
                     alt="로고"
+                    c
                     width="160"
                     height="130"
                   />
                 </div>
                 <div class="backers">
-                  <a href="index.html">
+                  <a href="/">
                     <img
                       src="img/title.png"
                       alt="로고"
@@ -102,30 +174,89 @@
         </div>
       </header>
     </div>
-
     <!--/header-->
+
+
     <!--main content-->
     <div class="main-content">
       <div class="container">
         <div class="row">
           <div class="content col-md-8 col-sm-12 col-xs-12">
-            <!--tabs-->
-            <div class="section-block">
-              <div>
-                <textarea
-                  id="postInput"
-                  rows="5"
-                  placeholder="포스트 입력"
-                ></textarea>
-                <br />
-                <button onclick="addPost()">포스트 추가</button>
-              </div>
-            </div>
+            <!-- 포스트 목록 구역 -->
+            <!-- 포스트 추가 버튼 -->
+            <button id="add-post-button" onclick="openPostModal()">
+              +
+            </button>
+            <div class="section-block" style="height: 1000px; overflow: auto;">
+              
+              <div class="posting">
+                
+                <!-- 포스트 작성 창 -->
+                <div id="post-modal" class="modal" style="height: 1100px">
+                  <div class="modal-content" style="height: 620px">
+                    <span class="close" onclick="closePostModal()"
+                      >&times;</span
+                    >
+                    <div id="table-container">
+                      <table border = "1" id="myTable" class="table">
+                        <tr class="price">
+                          <td style="width: 50px;">날짜</td>
+                          <td><input type="date" name="date" id="date" required></td>
+                        </tr>
+                        <tr class="price">
+                          <td style="width: 50px;">금액</td>
+                          <td><input type="text" name="price" id="price" required></td>
+                        </tr>
+                        <tr>
+                          <td style="width: 50px;">내용</td>
+                          <td>
+                            <textarea
+                            class="Incontent"
+                            name="content" 
+                            id="post-content" 
+                            cols="30"
+                            rows="10"
+                            placeholder="포스트 내용을 입력하세요..." 
+                            required>
+                          </textarea>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                    <button onclick="savePost()">게시물 저장</button>
 
-            <!-- 포스팅 목록 올라감 -->
-            <ul id="postList">
-              <!-- 포스팅 목록 -->
-            </ul>
+                  </div>
+                </div>
+                <div id="thread-container"></div>
+                <!-- 모달 구현 부분 -->
+                <div id="myModal" class="modal" style="height: 1000px">
+                  <div id="modalContent" class="modal-content"></div>
+                </div>    
+
+
+                
+     
+
+
+                <div id="comment-modal" class="modal">
+                  <div class="modal-content">
+                    <span class="close" onclick="closeCommentModal()"
+                      >&times;</span
+                    >
+                    <div id="post-content-container"></div>
+                    <textarea
+                      id="comment-content"
+                      placeholder="댓글을 입력하세요..."
+                    ></textarea>
+                    <button onclick="saveComment()">댓글 저장</button>
+                    <div id="comments-container"></div>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+            
+
           </div>
           <!--/tabs-->
           <!--/main content-->
@@ -133,15 +264,45 @@
           <div class="content col-md-4 col-sm-12 col-xs-12">
             <div class="section-block summary">
               <h1 class="section-title">{{ nickname }}</h1>
+              <div class="profile-contents">
+                <img
+                  src="{{ user_image }}"
+                  class="profile-image img responsive"
+                  alt="로그인 해주세요"
+                />
+                {% if loggedIn %}
+                <h2 class="user-ranking">{{ranking}}</h2>
+                <a href="/auth/logout"> 로그아웃 하기</a>
+                <p></p>
+                <a
+                  href="/auth/unlink"
+                  class="btn_unlink"
+                  onclick="return confirmUnlink();"
+                  >회원 탈퇴</a
+                >
+
+                <script>
+                  function confirmUnlink() {
+                    return confirm("회원 탈퇴를 진행하시겠습니까?");
+                  }
+                </script>
+
+                {% endif %} {% if not loggedIn %}
+                <a href="/auth/kakao" class="btn btn-contact">
+                  <img
+                    src="img/kakao_login_medium_narrow.png"
+                    alt="Kakao Login"
+                  />
+                </a>
+                {% endif %}
+              </div>
             </div>
             <div class="section-block">
               <!-- <h1 class="section-title">REWARDS</h1> -->
               <!--reward blocks-->
               <div class="mypage-block">
                 <!-- <span><i class="fa fa-users"></i> 180 backers</span> -->
-                <a href="http://localhost:8080/" class="btn btn-mypage"
-                  >MAIN PAGE</a
-                >
+                <a href="/" class="btn btn-mypage">MAIN PAGE</a>
               </div>
             </div>
             <div class="section-block">
@@ -171,7 +332,8 @@
     <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
 
     <!-- Template JS -->
-    <script type="text/javascript" src="js/scripts.js"></script>
+    <script type="text/javascript" src="js/posting.js"></script>
     <script type="text/javascript" src="assets/js/main.js"></script>
+    <script type="text/javascript" src = mypagepost.js></script>
   </body>
 </html>
