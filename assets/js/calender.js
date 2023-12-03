@@ -1,6 +1,6 @@
 let date = new Date();
 
-const renderCalender = () => {
+const renderCalendar = () => {
   const viewYear = date.getFullYear();
   const viewMonth = date.getMonth();
 
@@ -35,56 +35,166 @@ const renderCalender = () => {
   const firstDateIndex = dates.indexOf(1);
   const lastDateIndex = dates.lastIndexOf(TLDate);
 
+  const calendarContainer = document.querySelector(".dates");
+  calendarContainer.innerHTML = "";
+
   dates.forEach((date, i) => {
     const condition =
       i >= firstDateIndex && i < lastDateIndex + 1 ? "this" : "other";
-    dates[
-      i
-    ] = `<div class="date" data-date="${date}"><span class=${condition}>${date}</span></div>`;
-  });
+    const dateElement = document.createElement("div");
+    dateElement.classList.add("date");
+    dateElement.setAttribute("data-date", date);
 
-  document.querySelector(".dates").innerHTML = dates.join("");
+    const spanElement = document.createElement("span");
+    spanElement.classList.add(condition);
+    spanElement.textContent = date;
+
+    // 달력에 도장 이미지 넣기
+    const stampImage = document.createElement("div");
+    stampImage.classList.add("stamp-image");
+
+    dateElement.appendChild(spanElement);
+    dateElement.appendChild(stampImage);
+
+    calendarContainer.appendChild(dateElement);
+  });
 
   const today = new Date();
   if (viewMonth === today.getMonth() && viewYear === today.getFullYear()) {
-    for (let date of document.querySelectorAll(".this")) {
-      if (+date.innerText == today.getDate()) {
-        date.classList.add("today");
-        break;
-      }
+    const todayElement = calendarContainer.querySelector(
+      `.date[data-date="${today.getDate()}"].today`
+    );
+    if (todayElement) {
+      todayElement.classList.add("today");
     }
   }
 };
 
-renderCalender();
+renderCalendar();
 
-const preMonth = () => {
+const preMonth = (event) => {
+  event.preventDefault();
   date.setMonth(date.getMonth() - 1);
-  renderCalender();
+  renderCalendar();
 };
 
-const nextMonth = () => {
+const nextMonth = (event) => {
+  event.preventDefault();
   date.setMonth(date.getMonth() + 1);
-  renderCalender();
+  renderCalendar();
 };
 
-const goToday = () => {
+const goToday = (event) => {
+  event.preventDefault();
   date = new Date();
-  renderCalender();
+  renderCalendar();
 };
 
-const handleDateClick = (event) => {
-  const clickedDate = event.target.closest(".date").getAttribute("data-date");
-  if (clickedDate) {
-    alert(`Clicked on date: ${clickedDate}`);
-    // 클릭한 날짜동작 여기에 추가
-    event.target.closest(".date").classList.add("clicked");
+// 날짜 클릭 이벤트
+const handleDateClick = async (event) => {
+  const clickedDateElement = event.target.closest(".date");
+  if (!clickedDateElement) {
+    return;
+  }
+
+  const dateAttribute = clickedDateElement.getAttribute("data-date");
+  const clickedYear = new Date().getFullYear();
+
+  //년하고 월 분리하기
+  const clickedMonth = document
+    .querySelector(".year-month")
+    .textContent.split(" ")[1];
+
+  // 월을 받아올때 숫자말고 한글도 같이 받아와서 월 없애기
+  const monthNumber = parseInt(clickedMonth.replace("월", ""), 10);
+
+  const clickedDateObj = new Date(
+    `${clickedYear}-${monthNumber}-${dateAttribute}`
+  );
+
+  const today = new Date();
+
+  // 아직 지나지 않은 날짜 클릭시
+  if (clickedDateObj > today) {
+    alert(
+      `오늘은 ${
+        today.getMonth() + 1
+      }월 ${today.getDate()}일 입니다. 아직 도장을 받을 수 없습니다.`
+    );
+  } else {
+    handleChallengeClick(
+      clickedDateElement,
+      clickedYear,
+      monthNumber,
+      dateAttribute
+    );
   }
 };
 
-// 달력이 렌더링 된 후에 날짜 클릭 이벤트 설정
+const handleChallengeClick = async (
+  clickedDateElement,
+  clickedYear,
+  monthNumber,
+  dateAttribute
+) => {
+  const confirmation = confirm(
+    `${clickedYear}년 ${monthNumber}월 ${dateAttribute}일 만원챌린지 도전하시겠습니까?`
+  );
+
+  if (confirmation) {
+    clickedDateElement.classList.add("clicked");
+
+    // 서버에 해당 날짜의 price 값을 가져오는 요청
+    const response = await fetch("/challenge", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        date: `${clickedYear}-${monthNumber}-${dateAttribute}`,
+      }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+
+      let popupMessage = "";
+
+      if (data.isOver10000) {
+        popupMessage = "풉ㅋ 챌리지에 실패하셨습니다.";
+      } else {
+        // 도전 성공시 해당날짜 서버로 보내기
+        const messageResponse = await fetch("/challenge/save", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            date: `${clickedYear}-${monthNumber}-${dateAttribute}`,
+          }),
+        });
+        if (messageResponse.ok) {
+          const messageData = await messageResponse.json();
+          popupMessage = messageData.message || popupMessage;
+        } else {
+          console.error("서버에서 멘트를 가져오는 중에 오류가 발생했습니다.");
+        }
+
+        // 성공하면 도장 보이게 하기
+        clickedDateElement.querySelector(".stamp-image").style.display =
+          "block";
+      }
+
+      alert(popupMessage);
+    } else {
+      alert("서버에서 데이터를 가져오는 중에 오류가 발생했습니다.");
+    }
+  }
+};
+
+// 클릭 이벤트 리스너 설정
 document.addEventListener("DOMContentLoaded", () => {
-  renderCalender();
+  renderCalendar();
   const dateElements = document.querySelectorAll(".date");
   dateElements.forEach((dateElement) => {
     dateElement.addEventListener("click", handleDateClick);

@@ -69,12 +69,14 @@
   border-right: 1px solid #333333;
 }
 
+/* main_calender.css 파일에 추가 */
 .main_calender .date {
   width: calc(100% / 7);
   padding: 15px;
   text-align: right;
   border-bottom: 1px solid #333333;
   border-left: 1px solid #333333;
+  position: relative;
 }
 
 .main_calender .day:nth-child(7n + 1),
@@ -99,9 +101,9 @@
 
 .main_calender .today::before {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 10px;
+  left: 78%;
+  transform: translateX(-50%);
   z-index: -1;
   width: 30px;
   height: 30px;
@@ -114,4 +116,17 @@
 .main_calender .date:hover {
   cursor: pointer;
   background-color: #e0e0e0;
+}
+
+.main_calender .date .stamp-image {
+  width: 50px; /* 이미지의 너비 */
+  height: 50px; /* 이미지의 높이 */
+  background: url("./success.png") no-repeat center center;
+  /* 이미지 경로 지정 */
+  background-size: cover; /* 이미지를 커버하는 크기로 조절 */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
 }

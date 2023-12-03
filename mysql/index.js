@@ -14,6 +14,7 @@ const pool = mysql.createPool({
   database: process.env.MYSQL_DB,
 });
 
+// wtf
 const query = async (alias, values) => {
   return new Promise((resolve, reject) =>
     pool.query(sql[alias], values, (error, results) => {

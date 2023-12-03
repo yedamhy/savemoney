@@ -51,6 +51,5 @@ Temporary Items
  node_modules/
 
 # .gitignore
-
+.env
 node_modules/
-
