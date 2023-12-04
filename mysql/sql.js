@@ -2,7 +2,9 @@ module.exports = {
   userList: `select * from user_table`,
   userInsert: `insert into user_table set ?`,
   userDelete : `DELETE FROM user_table WHERE kakao_id = ?`,
-  checkIdDupli : 'SELECT COUNT(*) AS count FROM user_table WHERE kakao_id = ?',
+  checkIdDupli : `SELECT COUNT(*) AS count FROM user_table WHERE kakao_id = ?`,
+
+  userLevel : `SELECT level FROM user_table WHERE kakao_id = ?`,
 
   postInsert: `INSERT INTO post (date, price, text) VALUES (?, ?, ?)`,
   postList: `SELECT * FROM post`,
