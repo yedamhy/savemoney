@@ -114,12 +114,25 @@
   function openModalWithPost(postInfo) {
     const modal = document.getElementById('myModal');
     const modalContent = document.getElementById('modalContent');
+    const postDate = new Date(postInfo.date);
       console.log('클릭한 게시글의 정보:', postInfo);
       modalContent.innerHTML = `
-    <p><strong>게시일:</strong> ${postInfo.postDate}</p>
-    <p><strong>가격:</strong> ${postInfo.postPrice}</p>
-    <p><strong>내용:</strong> ${postInfo.postContent}</p>
-    `;
+      
+        <table border = "1" id="myTable" class="table" style="overflow: auto;">
+          <tr class="price">
+          <td style="width: 50px;">날짜</td>
+          <td>${postDate.toLocaleDateString()}</td>
+          </tr>
+          <tr class="price">
+          <td style="width: 50px;">금액</td>
+          <td>${postInfo.price}</td>
+          </tr>
+          <tr>
+          <td style="width: 50px; height: 280px">내용</td>
+          <td>${postInfo.text}</td>
+          </tr>
+        </table>
+        `;
     // 모달을 보이게 합니다.
     modal.style.display = 'block';
 
