@@ -6,7 +6,7 @@ module.exports = {
 
   userLevel : `SELECT level FROM user_table WHERE kakao_id = ?`,
 
-  postInsert: `INSERT INTO post (date, price, text) VALUES (?, ?, ?)`,
+  postInsert: `INSERT INTO post (date, price, text, user_id) VALUES (?, ?, ?, ?)`,
   postList: `SELECT * FROM post`,
 
   calendarFind: `select * from post where date = ?`,

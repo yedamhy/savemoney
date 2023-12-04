@@ -48,9 +48,11 @@ router.post("/savePost",async(req,res)=>{
         const postInfo = {
             date: req.body.postDate,
             price: req.body.postPrice,
-            content:req.body.postContent
+            content:req.body.postContent,
+            kakao_id : req.session.kakao.id
             
         };
+
         // console.log(postInfo)
         if (postInfo && postInfo.content) {
             const content = postInfo.content.trim();
@@ -64,7 +66,7 @@ router.post("/savePost",async(req,res)=>{
                 // const sql = `INSERT INTO post (date, price, text) VALUES (?, ?, ?)`;
                 console.log('Before query execution');
                 try{
-                    dbPool.query('postInsert', [formattedDate, postInfo.price, postInfo.content]);
+                    dbPool.query('postInsert', [formattedDate, postInfo.price, postInfo.content, postInfo.kakao_id]);
                     console.log('저장 완료!');
                     res.status(200).send('게시물이 성공적으로 저장되었습니다.');
                 }  catch (err) {
