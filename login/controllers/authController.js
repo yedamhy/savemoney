@@ -2,6 +2,9 @@
 const axios = require('axios');
 const qs = require('qs');
 const kakaoConfig = require('../config/kakao');
+const express = require('express');
+const router = express.Router();
+const mysql = require("../../mysql/index");
 
 
 exports.redirectToKakao = (req, res) => {
@@ -59,7 +62,26 @@ exports.handleKakaoCallback = async (req, res) => {
     }
 
     req.session.kakao = userResponse.data;
-    console.log(req.session.kakao);
+
+    const kakao_id = req.session.kakao.id;
+    // kakao_id 를 기준으로 중복값 있는지 확인
+    try {
+        const result = await mysql.query("checkIdDupli", [kakao_id]);
+        if (result[0].count == 0) {
+            // 데이터베이스에 저장!
+            const user = {
+                kakao_id : kakao_id,
+                nickname : req.session.kakao.properties.nickname,
+                image :  req.session.kakao.properties.thumbnail_image,
+            }
+            const user_result = await mysql.query("userInsert", user);
+        }
+    } catch (error) {
+        // 오류 처리
+        console.error('Signup Error:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+
     //res.send('로그인 성공!');
     res.redirect('/');
 };
@@ -106,6 +128,12 @@ exports.unlinkKakaoAccount = async (req, res) => {
                 'Authorization': `Bearer ${req.session.kakaoToken.access_token}`
             }
         });
+
+        // 데이터베이스에서 사용자 정보 삭제
+        if (req.session.kakao) {
+            // 세션에 카카오 정보가 있으면 템플릿 변수로 전달
+            const user_result = await mysql.query("userDelete", req.session.kakao.id);
+        }
 
         // 세션에서 사용자 정보 삭제
         req.session.destroy();
