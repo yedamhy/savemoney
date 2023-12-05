@@ -9,6 +9,8 @@ module.exports = {
   postInsert: `INSERT INTO post (date, price, text, user_id) VALUES (?, ?, ?, ?)`,
   postList: `SELECT * FROM post`,
 
+  commentInsert : `INSERT INTO comment_table (post_id, user_id, text, date) VALUES (?, ?, ?, ?)`,
+
   calendarFind: `select * from post where date = ?`,
   calendarInsert: `INSERT INTO calendar_table (success_date) VALUES (?)`,
 

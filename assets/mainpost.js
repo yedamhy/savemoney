@@ -133,6 +133,16 @@
           </tr>
         </table>
         `;
+
+      // 댓글 관련 영역
+      modalContent.innerHTML += `
+          <div id="comments-section">
+            <h3>댓글</h3>
+            <textarea id="comment-input" placeholder="댓글을 입력하세요..."></textarea>
+            <button onclick="postComment(${postInfo.post_id})">댓글 작성</button>
+            <div id="comments-container"></div>
+          </div>
+        `;
     // 모달을 보이게 합니다.
     modal.style.display = 'block';
 
@@ -144,5 +154,42 @@
         }
       };
   }
+
+
+ // 댓글을 서버로 전송하고 페이지에 추가하는 함수
+ async function postComment(postId) {
+     const commentContent = document.getElementById('comment-input').value;
+
+     console.log("댓글 프론트에서 확인 ", postId);
+
+     if (commentContent.trim() === '') {
+         alert('댓글 내용을 입력하세요.');
+         return;
+     }
+
+     try {
+         const response = await fetch('/saveComment', {
+             method: 'POST',
+             headers: {
+                 'Content-Type': 'application/json'
+             },
+             body: JSON.stringify({ postId, commentContent })
+         });
+
+         if (response.ok) {
+             // 페이지에 댓글 추가
+
+             const commentsContainer = document.getElementById('comments-container');
+             commentsContainer.innerHTML += `<p>${commentContent}</p>`;
+             document.getElementById('comment-input').value = ''; // 입력 필드 초기화
+         } else {
+             const errorData = await response.json();
+             alert(errorData.error);
+         }
+     } catch (error) {
+         console.error('댓글 저장 중 오류 발생:', error);
+     }
+ }
+
   
   

@@ -93,6 +93,25 @@ router.post("/savePost",async(req,res)=>{
             }
     });
 
+router.post('/saveComment', async (req, res) => {
+    try {
+        // 요청 본문에서 postId와 commentContent를 추출
+        const { postId, commentContent } = req.body;
+        console.log("댓글에서 확인 : ", req.body);
+        const userId = req.session.kakao.id;
+        // 현재 날짜와 시간
+        const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+        // 댓글 저장 로직 (예: MySQL 데이터베이스에 저장)
+        await dbPool.query("commentInsert", [postId, userId, commentContent, currentDate]);
+
+        res.status(200).json({ message: '댓글이 성공적으로 저장되었습니다.' });
+    } catch (error) {
+        console.error('댓글 저장 중 오류 발생:', error);
+        res.status(500).json({ error: '댓글을 저장하는 동안 오류 발생' });
+    }
+});
+
 
 
 //아래는 영주가 만들었던 댓글에 대한 코드인데 혹시나 몰라서 일단 남겨둘게!
