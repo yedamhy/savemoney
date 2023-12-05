@@ -9,7 +9,7 @@ const dbPool = require('../../mysql/index');
 
 
 router.get("/",function(req,res,next) {
-    fs.readFile("/index.html", (err, data) => {
+    fs.readFile("/index.njk", (err, data) => {
         if (err) {
           res.send("error");
         } else {
@@ -20,6 +20,7 @@ router.get("/",function(req,res,next) {
       });
     });
 
+// post 불러오기
 router.get('/getPosts',(req,res)=>{
     try{
         // console.log("getPosts 들어옴");
@@ -40,7 +41,7 @@ router.get('/getPosts',(req,res)=>{
     // res.status(200).json(sortedPosts);
 });
 
-
+// post 저장하기
 router.post("/savePost",async(req,res)=>{
     try{
         const post_id = req.params.post_id;
@@ -93,6 +94,7 @@ router.post("/savePost",async(req,res)=>{
             }
     });
 
+// 댓글 저장하기
 router.post('/saveComment', async (req, res) => {
     try {
         // 요청 본문에서 postId와 commentContent를 추출
@@ -112,34 +114,22 @@ router.post('/saveComment', async (req, res) => {
     }
 });
 
+// 댓글 불러오기
+router.get('/getComments', async (req, res) => {
+    try {
+        const postId = req.query.postId;
+        // 데이터베이스에서 postId에 해당하는 댓글 조회
+        const comment_post = await dbPool.query("commentList", [postId]);
 
+        // 조회된 댓글 데이터를 JSON 형식으로 클라이언트에 전송
+        res.json(comment_post);
 
-//아래는 영주가 만들었던 댓글에 대한 코드인데 혹시나 몰라서 일단 남겨둘게!
-
-// function openCommentModal(postElement) {
-//     currentPost = postElement;
-//     let postContent = postElement.getElementsByClassName('post-content')[0].textContent;
-//     document.getElementById('post-content-container').innerHTML = '<strong>게시글:</strong> ' + postContent;
-
-//     let commentsContainer = document.getElementById('comments-container');
-//     commentsContainer.innerHTML = '';
-
-//     let existingComments = postElement.getElementsByClassName('comment');
-//     for (let i = 0; i < existingComments.length; i++) {
-//         let commentElement = document.createElement('div');
-//         commentElement.classList.add('comment');
-//         commentElement.textContent = existingComments[i].textContent;
-//         commentsContainer.appendChild(commentElement);
-//     }
-
-//     commentModal.style.display = 'block';
-//     // 댓글을 새로 작성할 때 이전 내용 초기화
-//     document.getElementById('comment-content').value = '';
-// }
-
-// function closeCommentModal() {
-//     commentModal.style.display = 'none';
-// }
+    } catch (error) {
+        // 오류 발생 시 클라이언트에 오류 메시지 전송
+        console.error("댓글 조회 중 오류 발생:", error);
+        res.status(500).json({ error: '댓글을 불러오는 동안 오류가 발생했습니다.' });
+    }
+});
 
 
 function saveComment() {

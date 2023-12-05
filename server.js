@@ -44,7 +44,6 @@ app.use("/challenge", challengeRouter);
 const PORT = 8080;
 app.listen(PORT, () => {
   console.log(`${PORT}번 포트에서 서버 대기 중입니다.`);
-  console.log(`Environment variables: ${JSON.stringify(process.env)}`); // 환경 변수 전체를 출력합니다.
 });
 
 module.exports = app;

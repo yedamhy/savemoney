@@ -13,7 +13,55 @@
     }
   }
 
-  
+ // 댓글 데이터를 불러오는 함수
+ async function fetchComments(postId) {
+     try {
+         const response = await fetch(`/getComments?postId=${postId}`);
+         if (!response.ok) {
+             throw new Error('서버 응답 오류');
+         }
+         const commentsData = await response.json();
+         console.log("댓글 리턴 값 : ", commentsData);
+         return commentsData;
+     } catch (error) {
+         console.error('댓글 불러오기 중 오류 발생:', error);
+         return [];
+     }
+ }
+
+
+
+ // 댓글을 화면에 표시하는 함수
+ function displayComments(commentsData) {
+     const commentsContainer = document.getElementById('comments-container');
+     commentsContainer.innerHTML = '';
+
+     commentsData.forEach(comment => {
+         const commentElement = document.createElement('div');
+         commentElement.classList.add('comment-box');
+
+         // 날짜 형식 변환
+         const commentDate = new Date(comment.date);
+         const formattedDate = commentDate.toLocaleDateString('ko-KR', {
+             timeZone: 'UTC',
+             year: 'numeric',
+             month: '2-digit',
+             day: '2-digit',
+             hour: '2-digit',
+             minute: '2-digit'
+         });
+
+         commentElement.innerHTML = `
+            <p id ="comment-date"> ${formattedDate}</p>
+            <p id ="comment-text"> ${comment.text}</p>
+            
+        `;
+         commentsContainer.appendChild(commentElement);
+     });
+ }
+
+
+
   // 게시글을 HTML 문자열로 변환하여 화면에 표시하는 함수
   function displayPosts(postsData){
     console.log(postsData);
@@ -38,11 +86,11 @@
 
       threadContainer.appendChild(postElement);
     })
-   
   }
+
+
   //페이지 로드시 자동으로 게시글을 불러와서 표시
   window.onload = fetchAndDisplayPosts;
-
 
 
   //게시글을 저장하고 화면을 갱신하는 함수
@@ -89,6 +137,7 @@
     }
   }
 
+
   //게시글 입력 창 열기
   function openPostModal() {
       let modal = document.getElementById('post-modal');
@@ -96,6 +145,7 @@
       // 새로운 글을 작성할 때 이전 내용 초기화
       document.getElementById('post-content').value = '';
   }
+
 
   //게시글 입력 창 끄기
   function closePostModal() {
@@ -107,19 +157,16 @@
   }
 
 
-
-  
-
   // 게시글 창 열기 함수
-  function openModalWithPost(postInfo) {
-    const modal = document.getElementById('myModal');
-    const modalContent = document.getElementById('modalContent');
-    const postDate = new Date(postInfo.date);
-      console.log('클릭한 게시글의 정보:', postInfo);
+  async function openModalWithPost(postInfo) {
+      const modal = document.getElementById('myModal');
+      const modalContent = document.getElementById('modalContent');
+      const postDate = new Date(postInfo.date);
+
       modalContent.innerHTML = `
       
         <table border = "1" id="myTable" class="table" style="overflow: auto;">
-          <tr class="price">
+          <tr class="price" >
           <td style="width: 50px;">날짜</td>
           <td>${postDate.toLocaleDateString()}</td>
           </tr>
@@ -128,7 +175,7 @@
           <td>${postInfo.price}</td>
           </tr>
           <tr>
-          <td style="width: 50px; height: 280px">내용</td>
+          <td style="width: 50px; height: auto">내용</td>
           <td>${postInfo.text}</td>
           </tr>
         </table>
@@ -137,30 +184,33 @@
       // 댓글 관련 영역
       modalContent.innerHTML += `
           <div id="comments-section">
-            <h3>댓글</h3>
-            <textarea id="comment-input" placeholder="댓글을 입력하세요..."></textarea>
+            <p><b>Comment</b></p>
+            <textarea id="comment-input" placeholder="댓글을 입력하세요." style =" height: 30px" ></textarea>
             <button onclick="postComment(${postInfo.post_id})">댓글 작성</button>
             <div id="comments-container"></div>
           </div>
         `;
-    // 모달을 보이게 합니다.
-    modal.style.display = 'block';
 
-    // 추가: 모달 외부를 클릭하면 모달이 닫히도록 설정
-    window.onclick = function(event) {
-        const modal = document.getElementById('myModal'); // 모달의 ID를 'myModal'로 수정
-        if (event.target == modal) {
-          modal.style.display = 'none';
-        }
+      // 모달을 보이게 합니다.
+      modal.style.display = 'block';
+      const commentsData = await fetchComments(postInfo.post_id);
+      displayComments(commentsData);
+
+
+      // 추가: 모달 외부를 클릭하면 모달이 닫히도록 설정
+      window.onclick = function (event) {
+          const modal = document.getElementById('myModal'); // 모달의 ID를 'myModal'로 수정
+          if (event.target == modal) {
+              modal.style.display = 'none';
+          }
       };
   }
+
 
 
  // 댓글을 서버로 전송하고 페이지에 추가하는 함수
  async function postComment(postId) {
      const commentContent = document.getElementById('comment-input').value;
-
-     console.log("댓글 프론트에서 확인 ", postId);
 
      if (commentContent.trim() === '') {
          alert('댓글 내용을 입력하세요.');
