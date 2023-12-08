@@ -6,7 +6,7 @@ module.exports = {
 
   userLevel : `SELECT level FROM user_table WHERE kakao_id = ?`,
 
-  postInsert: `INSERT INTO post (date, price, text, user_id) VALUES (?, ?, ?, ?)`,
+  postInsert: `INSERT INTO post (date, price, text, user_id, nickname, image_path) VALUES (?, ?, ?, ?, ?, ?)`,
   postList: `SELECT * FROM post`,
 
   commentInsert : `INSERT INTO comment_table (post_id, user_id, text, date) VALUES (?, ?, ?, ?)`,

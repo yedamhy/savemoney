@@ -1,7 +1,19 @@
 const { Router } = require("express");
+const express = require("express"); // express 모듈 추가
 const router = require("../../login/routes/auth");
 const fs = require("fs");
+// const authRouter  = express.Router();
+const multer = require('multer');
+const path = require('path');
 
+// // 페이로드 크기 제한 늘리기
+// authRouter.use(express.json({ limit: '50mb' }));
+// authRouter.use(express.urlencoded({ extended: true, limit: '50mb' }));
+
+const upload =multer({dest: 'uploads/'});// uploads/는 이미지를 저장할 디렉토리
+
+// const storage = multer.memoryStorage(); // 파일 데이터를 메모리에 저장
+// const upload = multer({ storage: storage, limits: { fileSize: 50 * 1024 * 1024 } });
 
 const bodyParser = require('body-parser');
 const dbPool = require('../../mysql/index');
@@ -42,7 +54,7 @@ router.get('/getPosts',(req,res)=>{
 });
 
 // post 저장하기
-router.post("/savePost",async(req,res)=>{
+router.post("/savePost",upload.single('file'), async (req, res)=>{
     try{
         const post_id = req.params.post_id;
         
@@ -50,9 +62,20 @@ router.post("/savePost",async(req,res)=>{
             date: req.body.postDate,
             price: req.body.postPrice,
             content:req.body.postContent,
-            kakao_id : req.session.kakao.id
-            
+            kakao_id : req.session.kakao.id,
+            nickname : req.session.kakao.properties.nickname,
         };
+        console.log(postInfo.nickname);
+
+        // 이미지 파일이 전송된 경우 파일 경로를 postInfo에 추가
+        if (req.file) {
+            const filePath =req.file.path;
+            const urlPath =filePath.replace(/\\/g, '/')
+            postInfo.image_path = urlPath;
+        }
+        console.log(req.file);
+        console.log(postInfo.image_path);
+        
 
         // console.log(postInfo)
         if (postInfo && postInfo.content) {
@@ -62,27 +85,24 @@ router.post("/savePost",async(req,res)=>{
             if (content !== '') {
                 const formattedDate = new Date(postInfo.date).toISOString().slice(0, 10);
                 
-                // 게시물 저장 로직
-                // console.log("메세지 입력해봐")
-                // const sql = `INSERT INTO post (date, price, text) VALUES (?, ?, ?)`;
+                
                 console.log('Before query execution');
                 try{
-                    dbPool.query('postInsert', [formattedDate, postInfo.price, postInfo.content, postInfo.kakao_id]);
+                    // 이미지 파일 경로를 포함하여 쿼리 실행
+                    const result = await dbPool.query('postInsert', [
+                        formattedDate,
+                        postInfo.price,
+                        postInfo.content,
+                        postInfo.kakao_id,
+                        postInfo.nickname,
+                        postInfo.image_path, // 이미지 파일 경로 추가
+                    ]);
                     console.log('저장 완료!');
-                    res.status(200).send('게시물이 성공적으로 저장되었습니다.');
+                    res.status(200).json({message:'게시물이 성공적으로 저장되었습니다.'});
                 }  catch (err) {
                     console.error('게시물 저장 중 MySQL 오류:', err);
                     res.status(500).json({ error: '게시물을 저장하는 동안 오류가 발생했습니다.' });
-                
-                    // if (err) {
-                    //     console.error('게시물 저장 중 MySQL 오류:', err);
-                    //     res.status(500).json({ error: '게시물을 저장하는 동안 오류가 발생했습니다.' });
-                    //   } else {
-                    //     console.log('게시물이 성공적으로 저장되었습니다.');
-                    //     res.status(200).send('게시물이 성공적으로 저장되었습니다.');
-                    //   }
-                // postsDatabase.push(postInfo);
-                // console.log(postsDatabase);
+
 
                 } 
                 console.log('After query execution');
@@ -90,7 +110,6 @@ router.post("/savePost",async(req,res)=>{
         }
             }catch (error) {
         console.error('Error during savepost:', error);
-        // res.status(500).json({ error: 'Internal Server Error' });
             }
     });
 

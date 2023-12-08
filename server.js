@@ -7,6 +7,7 @@ const authController = require("./login/controllers/authController"); // auth �
 const app = express();
 const cors = require("cors");
 
+
 const postRouter = require("./assets/js/posting");
 const challengeRouter = require("./assets/js/challenge");
 
@@ -16,7 +17,13 @@ nunjucks.configure("assets", {
   express: app,
   autoescape: true,
 });
-app.use(express.json());
+app.use(express.json({
+  limit: '50mb'
+}));
+app.use(express.urlencoded({
+  limit: '50mb',
+  extended: false
+}))
 // 정적 파일 제공을 위한 설정
 app.use(express.static(path.join(__dirname, "assets")));
 
@@ -30,6 +37,11 @@ app.use(
     secure: false,
   })
 );
+
+
+// uploads 디렉토리를 정적 파일로 서빙
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 // 라우터 설정
 app.use("/auth", authRouter); // auth 경로 설정
