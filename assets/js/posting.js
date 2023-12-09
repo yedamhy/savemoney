@@ -50,6 +50,36 @@ router.get("/getPosts", (req, res) => {
   // res.status(200).json(sortedPosts);
 });
 
+
+//마이페이지 게시물불러오기
+router.get("/getUserPosts", async(req, res) => {
+  try {
+    // 세션에서 사용자 ID를 가져오기 전에 해당 객체와 프로퍼티가 존재하는지 확인
+    if (!req.session || !req.session.kakao || !req.session.kakao.id) {
+      const errorMessage = "로그인이 필요합니다.";
+      console.error(errorMessage);
+      // 에러 메시지를 클라이언트로 전송
+      return res.status(500).json({ error: errorMessage });
+    }
+
+    const postInfo_user = {
+      kakao_id: req.session.kakao.id,
+      nickname: req.session.kakao.properties.nickname,
+    };
+
+    console.log(postInfo_user.kakao_id);
+
+    console.log("getPosts 들어옴");
+    const user_post = await dbPool.query("postUserList", [postInfo_user.kakao_id]);
+    res.json(user_post);
+
+    console.log("게시물 불러오기 성공:");
+  } catch (error) {
+    console.error("게시글 불러오기 중 오류 발생", error);
+    res.status(500).json({ error: "게시글을 불러오는 동안 오류 발생" });
+  }
+});
+
 // post 저장하기
 router.post("/savePost", upload.single("file"), async (req, res) => {
   try {

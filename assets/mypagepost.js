@@ -1,3 +1,6 @@
+    //페이지 로드시 자동으로 게시글을 불러와서 표시
+    window.onload = fetchAndDisplayUserPosts;
+  
   // 파일 선택 시 이미지 미리보기
   document.getElementById('fileInput').addEventListener('change', function () {
     const fileInput = this;
@@ -21,11 +24,18 @@
  
  
  //게시글을 불러와 화면에 표시하는 함수
- async function fetchAndDisplayPosts(){
+ async function fetchAndDisplayUserPosts(){
+
     try{
       //서버에서 기존 게시글 데이터 불러옴(마이페이지니까 사용자 아이디를받아서 같은 아이디를 가진 게시물 불러오기로 바꿔야함)
-      const response = await fetch("/getPosts");
+      const response = await fetch(`/getUserPosts`);
       const data = await response.json();
+      if (data.error) {
+        // 에러 메시지를 alert로 표시
+        alert(data.error);
+        window.location.href = '/';
+        return;
+      }
       console.log(data);
       //화면에 게시글을 표시
       displayPosts(data.reverse());
@@ -64,8 +74,7 @@
       threadContainer.appendChild(postElement);
     })
   }
-  //페이지 로드시 자동으로 게시글을 불러와서 표시
-  window.onload = fetchAndDisplayPosts;
+
 
 
 
@@ -116,7 +125,7 @@
           console.log(data.message);
           //서버에 저장된 게시글 데이터를 다시 가져와서 화면 갱신
           closePostModal();
-          await fetchAndDisplayPosts();
+          await fetchAndDisplayUserPosts();
 
         } else {
             const errorData = await response.json();
