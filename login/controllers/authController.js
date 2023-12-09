@@ -99,7 +99,7 @@ exports.renderHomePage = async(req, res) => {
         displayImage = req.session.kakao.properties.thumbnail_image;
         loggedIn = true; // 로그인 상태를 true로 설정
         userRanking =  await mysql.query("userLevel", req.session.kakao.id);
-        level = userRanking.level;
+        level = userRanking[0].level;
     }
 
 
