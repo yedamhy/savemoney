@@ -51,6 +51,9 @@ app.get("/", authController.renderHomePage);
 app.use("/", postRouter);
 app.use("/challenge", challengeRouter);
 
+// mypage
+app.get('/mypage', authController.renderMyPage);
+
 // 서버 시작
 
 const PORT = 8080;
