@@ -12,10 +12,9 @@ module.exports = {
   commentInsert: `INSERT INTO comment_table (post_id, user_id, text, date) VALUES (?, ?, ?, ?)`,
   commentList: `SELECT * FROM comment_table WHERE post_id = ?`,
 
-  calendarInsert_id: `INSERT INTO calendar_table (user_id) VALUES (?)`,
   calendarFind: `SELECT * FROM post WHERE user_id = ? AND date = ?;`,
   calendarInsert: `INSERT INTO calendar_table (user_id,success_date) VALUES (?,?)`,
-  calendarList: `SELECT * FROM calendar_table`,
+  calendarList: `SELECT success_date FROM calendar_table WHERE user_id = ?`,
 
   // 임시로 과제에 사용했던 거 넣어둠
   // 이게 아마 개 많을 것으로 예상
