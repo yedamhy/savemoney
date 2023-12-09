@@ -68,14 +68,18 @@
 
          // 날짜 형식 변환
          const commentDate = new Date(comment.date);
-         const formattedDate = commentDate.toLocaleDateString('ko-KR', {
-             timeZone: 'UTC',
+
+         const formattedDate = commentDate.toLocaleString('ko-KR', {
              year: 'numeric',
              month: '2-digit',
              day: '2-digit',
              hour: '2-digit',
-             minute: '2-digit'
+             minute: '2-digit',
+             hour12: true, // 24시간 형식으로 표시
+             timeZone: 'Asia/Seoul', // 한국 시간대로 설정
          });
+
+
 
          commentElement.innerHTML = `
             <p id ="comment-date"> ${formattedDate}</p>
@@ -279,10 +283,33 @@
          });
 
          if (response.ok) {
-             // 페이지에 댓글 추가
-
              const commentsContainer = document.getElementById('comments-container');
-             commentsContainer.innerHTML += `<p>${commentContent}</p>`;
+
+             // 날짜 형식 변환
+
+             const commentDate = new Date();
+
+             const formattedDate = commentDate.toLocaleString('ko-KR', {
+                 year: 'numeric',
+                 month: '2-digit',
+                 day: '2-digit',
+                 hour: '2-digit',
+                 minute: '2-digit',
+                 hour12: true, // 24시간 형식으로 표시
+                 timeZone: 'Asia/Seoul', // 한국 시간대로 설정
+             });
+
+             // 새 댓글 요소 생성
+             const newComment = document.createElement('div');
+             newComment.className = 'comment-box'; // CSS 클래스 적용
+             newComment.innerHTML = `
+            <p id="comment-date">${formattedDate}</p>
+            <p id="comment-text">${commentContent}</p>
+            
+        `;
+
+             // 페이지에 새 댓글 추가
+             commentsContainer.appendChild(newComment);
              document.getElementById('comment-input').value = ''; // 입력 필드 초기화
          } else {
              const errorData = await response.json();

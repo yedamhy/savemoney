@@ -126,7 +126,9 @@ router.post("/saveComment", async (req, res) => {
     console.log("댓글에서 확인 : ", req.body);
     const userId = req.session.kakao.id;
     // 현재 날짜와 시간
-    const currentDate = new Date().toISOString().slice(0, 19).replace("T", " ");
+    const commentDate = new Date(); // 예시로 현재 날짜 및 시간을 사용합니다.
+
+    const currentDate = commentDate.toISOString();
 
     // 댓글 저장 로직 (예: MySQL 데이터베이스에 저장)
     await dbPool.query("commentInsert", [
