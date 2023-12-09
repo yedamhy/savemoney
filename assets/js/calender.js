@@ -142,52 +142,60 @@ const handleChallengeClick = async (
   );
 
   if (confirmation) {
-    clickedDateElement.classList.add("clicked");
+    try {
+      // 서버에 해당 날짜의 price 값을 가져오는 요청
+      const response = await fetch("/challenge", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          date: `${clickedYear}-${monthNumber}-${dateAttribute}`,
+        }),
+      });
 
-    // 서버에 해당 날짜의 price 값을 가져오는 요청
-    const response = await fetch("/challenge", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        date: `${clickedYear}-${monthNumber}-${dateAttribute}`,
-      }),
-    });
+      if (response.ok) {
+        const data = await response.json();
 
-    if (response.ok) {
-      const data = await response.json();
+        let popupMessage = "";
 
-      let popupMessage = "";
-
-      if (data.isOver10000) {
-        popupMessage = "풉ㅋ 챌리지에 실패하셨습니다.";
-      } else {
-        // 도전 성공시 해당날짜 서버로 보내기
-        const messageResponse = await fetch("/challenge/save", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            date: `${clickedYear}-${monthNumber}-${dateAttribute}`,
-          }),
-        });
-        if (messageResponse.ok) {
-          const messageData = await messageResponse.json();
-          popupMessage = messageData.message || popupMessage;
+        if (data.isOver10000) {
+          popupMessage = "풉ㅋ 챌리지에 실패하셨습니다.";
         } else {
-          console.error("서버에서 멘트를 가져오는 중에 오류가 발생했습니다.");
+          // 여기에 챌린지 성공 날짜를 서버에 저장하는 요청 추가
+          const successResponse = await fetch("/challenge/save", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              successDate: `${clickedYear}-${monthNumber}-${dateAttribute}`,
+            }),
+          });
+
+          if (successResponse.ok) {
+            const successData = await successResponse.json();
+            // 성공한 경우의 추가적인 처리 또는 메시지 표시
+            console.log(successData.message);
+          } else {
+            console.error(
+              "서버에서 챌린지 성공 날짜를 저장하는 중에 오류가 발생했습니다."
+            );
+          }
+          // 성공하면 도장 보이게 하기
+          clickedDateElement.querySelector(".stamp-image").style.display =
+            "block";
         }
 
-        // 성공하면 도장 보이게 하기
-        clickedDateElement.querySelector(".stamp-image").style.display =
-          "block";
+        alert(popupMessage);
+      } else {
+        alert("서버에서 데이터를 가져오는 중에 오류가 발생했습니다.");
       }
-
-      alert(popupMessage);
-    } else {
-      alert("서버에서 데이터를 가져오는 중에 오류가 발생했습니다.");
+    } catch (error) {
+      console.error(
+        "클라이언트에서 챌린지 도전을 처리하는 중에 오류가 발생했습니다.",
+        error
+      );
     }
   }
 };
