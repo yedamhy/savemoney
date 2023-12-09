@@ -102,10 +102,15 @@
                 
                 <!-- 포스트 작성 창 -->
                 <div id="post-modal" class="modal" style="height: 1100px">
-                  <div class="modal-content" style="height: 620px">
-                    <span class="close" onclick="closePostModal()"
-                      >&times;</span
-                    >
+                <div class="modal-content" style="height: 620px">
+                <div style="text-align: right">
+                  
+                  <button id="add-post-button" onclick="closePostModal()">
+                    x
+                  </button>
+                </div>
+                  
+              
                     <div id="table-container">
                       <table border = "1" id="myTable" class="table">
                         <tr class="price">
@@ -130,19 +135,25 @@
                           </textarea>
                           </td>
                         </tr>
+                        <tr>
                          <!-- 사진 업로드를 위한 입력 필드 -->
+                         <td></td>
+                         <td>
+                          <!-- 이미지 미리보기를 위한 영역 -->
+                          <div id="imagePreview"></div>
+                         </td>
+                        </tr>
                         <tr>
                           <td style="width: 50px;">사진</td>
                           <td>
-                              <input type="file" name="fileInput" id="fileInput" accept="image/*">
+                              <input type="file" name="fileInput" id="fileInput" accept="image/* required">
                           </td>
                       </tr>
                       </table>
                     </div>
                     <button onclick="savePost()">게시물 저장</button>
 
-                    <!-- 이미지 미리보기를 위한 영역 -->
-                    <div id="imagePreview"></div>
+                
 
                   </div>
                 </div>
@@ -252,6 +263,9 @@
         </div>
       </div>
     </footer>
+    <script>
+      document.getElementById('date').value = new Date().toISOString().substring(0, 10);;
+    </script>
 
     <!-- Global jQuery -->
     <script

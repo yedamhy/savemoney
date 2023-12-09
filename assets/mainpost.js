@@ -1,6 +1,7 @@
 
   //페이지 로드시 자동으로 게시글을 불러와서 표시
   window.onload = fetchAndDisplayPosts; 
+  
  
  // 파일 선택 시 이미지 미리보기
     document.getElementById('fileInput').addEventListener('change', function () {
@@ -183,6 +184,17 @@
     }else {
         console.error('요소를 찾을 수 없거나 값이 비어 있습니다.');
     }
+
+   
+      // 1. 미리보기 영역 초기화
+      document.getElementById("imagePreview").innerHTML = "";
+  
+      // 2. 입력 필드 초기화
+
+      document.getElementById("price").value = "";
+      document.getElementById("post-content").value = "";
+      document.getElementById("fileInput").value = "";
+      document.getElementById('date').value = new Date().toISOString().substring(0, 10);;
   }
 
 
@@ -199,6 +211,16 @@
   function closePostModal() {
       // 모달 창의 HTML 엘리먼트를 가져옵니다.
       let modal = document.getElementById('post-modal');
+    
+        // 1. 미리보기 영역 초기화
+        document.getElementById("imagePreview").innerHTML = "";
+    
+        // 2. 입력 필드 초기화
+        document.getElementById('date').value = new Date().toISOString().substring(0, 10);;
+        document.getElementById("price").value = "";
+        document.getElementById("post-content").value = "";
+        document.getElementById("fileInput").value = "";
+      
 
       // 모달 창을 숨기도록 스타일을 변경합니다.
       modal.style.display = 'none';
@@ -232,7 +254,7 @@
           <td>${postInfo.text}</td>
           </tr>
           <tr>
-          <td><img src="${postInfo.image_path}" alt="게시물 이미지" style="max-width: 50%; max-height: 40%;"></td>
+          <td>${postInfo.image_path ? `<img src="${postInfo.image_path}" alt="게시물 이미지" style="max-width: 50%; max-height: 40%;">` : ''}</td>
             </tr>
         </table>
         `;
