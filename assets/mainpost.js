@@ -298,17 +298,18 @@ async function fetchCommentCount(postId){
       // 댓글 관련 영역
       modalContent.innerHTML += `
          <div class="comments-header">
-            <button class="like-button">좋아요 ❤️</button> 
-         
             <span class="comments-count">댓글 ${comment_cnt}개 </span>
-            <span> </span>
+
             <span class="likes-count">좋아요 ${like_cnt}개 </span>
+            <div><button class="like-button">좋아요 ❤️</button> 
+         </div>
+            
           </div>
         
           <div id="comments-section">
             <p><b>Comment</b></p>
             <textarea id="comment-input" placeholder="댓글을 입력하세요." style =" height: 30px" ></textarea>
-            <button onclick="postComment(${postInfo.post_id})">댓글 작성 💬 </button>
+            <button id="comment-button" onclick="postComment(${postInfo.post_id})">댓글 작성 💬 </button>
             <div id="comments-container"></div>
           </div>
         `;

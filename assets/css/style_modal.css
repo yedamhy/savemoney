@@ -83,7 +83,7 @@
     font-size : 11px;
 }
 
- #comment-text{
+#comment-text{
     font-size : 14px;
 }
 
@@ -92,10 +92,19 @@ button {
     background-color: #99deab;
     color: white;
     padding: 5px 15px;
-    margin: 6px 0;
+    margin: 5px 0;
     border: none;
     border-radius: 4px;
     cursor: pointer;
 }
 
+.like-button{
+    margin-top: 10px;
+}
+.comments-count {
+    margin-right: 5px; /* 오른쪽 여백을 10px로 설정 */
+}
 
+#comment-button{
+    margin-bottom: 20px;
+}
