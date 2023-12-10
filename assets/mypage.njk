@@ -78,7 +78,7 @@
       <header class="header">
         <div class="container">
           <div class="row">
-            <div class="goal-summary pull-left">
+            <div class="goal-summary pull-left" style="padding-left: 0px; ">
               <div
                 style="
                   background-color: white;
@@ -117,12 +117,17 @@
     <div class="main-content">
       <div class="container">
         <div class="row">
-          <div class="content col-md-8 col-sm-12 col-xs-12">
-            <!-- 포스트 목록 구역 -->
-            <!-- 포스트 추가 버튼 -->
+          <!-- add post -->
+          <div class="content col-md-1 col-sm-12 col-xs-12">
             <button id="add-post-button" onclick="openPostModal()">
               +
             </button>
+          </div>
+
+          <div class="content col-md-7 col-sm-12 col-xs-12">
+            <!-- 포스트 목록 구역 -->
+            <!-- 포스트 추가 버튼 -->
+
             <div class="section-block" style="height: 1000px; overflow: auto;">
               
               <div class="posting">
