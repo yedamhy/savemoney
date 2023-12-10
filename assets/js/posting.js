@@ -148,6 +148,29 @@ router.post("/savePost", upload.single("file"), async (req, res) => {
   }
 });
 
+// 좋아요 개수 가져오기
+router.get("/getLikeCnt", async (req, res) =>{
+  try{
+    const postId = req.query.postId;
+
+    // 데이터베이스에서 좋아요 개수 가져오기
+    const post_like = await dbPool.query("likeCount", [postId]);
+    res.json(post_like[0]);
+    console.log("좋아요 개수" , post_like[0]);
+  } catch {
+
+  }
+});
+
+// 좋아요 버튼 누르면 증가시키기
+router.post("/updateLike", async (req, res) => {
+  const postId = req.query.postId;
+
+  await dbPool.query("likeUpdate", [postId]);
+  res.status(200).json({ message: "좋아요가 성공적으로 업데이트 되었습니다." });
+})
+
+
 // 댓글 저장하기
 router.post("/saveComment", async (req, res) => {
   try {
