@@ -43,9 +43,69 @@
     }catch (error){
       console.error('게시글 불러오기 중 오류 발생');
     }
-  }
+ }
 
-  
+    // 댓글 데이터를 불러오는 함수
+async function fetchComments(postId) {
+    try {
+        const response = await fetch(`/getComments?postId=${postId}`);
+        if (!response.ok) {
+            throw new Error('서버 응답 오류');
+        }
+        const commentsData = await response.json();
+        console.log("댓글 리턴 값 : ", commentsData);
+        return commentsData;
+    } catch (error) {
+        console.error('댓글 불러오기 중 오류 발생:', error);
+        return [];
+    }
+ }
+
+    // 댓글을 화면에 표시하는 함수
+function displayComments(commentsData) {
+    const commentsContainer = document.getElementById('comments-container');
+    commentsContainer.innerHTML = '';
+
+    commentsData.forEach(comment => {
+        const commentElement = document.createElement('div');
+        commentElement.classList.add('comment-box');
+
+        // 날짜 형식 변환
+        const commentDate = new Date(comment.date);
+
+        const formattedDate = commentDate.toLocaleString('ko-KR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true, // 24시간 형식으로 표시
+            timeZone: 'Asia/Seoul', // 한국 시간대로 설정
+        });
+
+
+
+        commentElement.innerHTML = `
+        <p id ="comment-date"> ${formattedDate}</p>
+        <p id ="comment-text"> ${comment.text}</p>
+        
+    `;
+        commentsContainer.appendChild(commentElement);
+    });
+}
+
+    // 댓글 데이터를 불러오고 화면에 표시하는 함수
+async function fetchCommentsAndDisplay(postId) {
+    try {
+        const commentsData = await fetchComments(postId);
+        displayComments(commentsData);
+    } catch (error) {
+        console.error('댓글 불러오기 및 표시 중 오류 발생:', error);
+    }
+}
+
+
+
   // 게시글을 HTML 문자열로 변환하여 화면에 표시하는 함수
   function displayPosts(postsData){
     console.log(postsData);
@@ -190,7 +250,7 @@
   
 
   // 게시글 창 열기 함수
-  function openModalWithPost(postInfo) {
+function openModalWithPost(postInfo) {
     const modal = document.getElementById('myModal');
     const modalContent = document.getElementById('modalContent');
     const postDate = new Date(postInfo.date);
@@ -219,7 +279,23 @@
     </table>
     `;
 
+      console.log("post id", postInfo.post_id);
+
+      // 댓글 관련 영역
+      modalContent.innerHTML += `
+          <div id="comments-section">
+            <p><b>Comment</b></p>
+            <textarea id="comment-input" placeholder="댓글을 입력하세요." style =" height: 30px" ></textarea>
+            <button onclick="postComment(${postInfo.post_id})">댓글 작성</button>
+            <div id="comments-container"></div>
+          </div>
+        `;
+
     modal.style.display = 'block';
+
+    // 댓글 띄우기
+    fetchCommentsAndDisplay(postInfo.post_id);
+
 
     // 추가: 모달 외부를 클릭하면 모달이 닫히도록 설정
     window.onclick = function(event) {
@@ -229,5 +305,60 @@
         }
       };
   }
-  
-  
+
+    // 댓글을 서버로 전송하고 페이지에 추가하는 함수
+    async function postComment(postId) {
+        const commentContent = document.getElementById('comment-input').value;
+
+        if (commentContent.trim() === '') {
+            alert('댓글 내용을 입력하세요.');
+            return;
+        }
+
+        try {
+            const response = await fetch('/saveComment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ postId, commentContent })
+            });
+
+            if (response.ok) {
+                const commentsContainer = document.getElementById('comments-container');
+
+                // 날짜 형식 변환
+
+                const commentDate = new Date();
+
+                const formattedDate = commentDate.toLocaleString('ko-KR', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true, // 24시간 형식으로 표시
+                    timeZone: 'Asia/Seoul', // 한국 시간대로 설정
+                });
+
+                // 새 댓글 요소 생성
+                const newComment = document.createElement('div');
+                newComment.className = 'comment-box'; // CSS 클래스 적용
+                newComment.innerHTML = `
+            <p id="comment-date">${formattedDate}</p>
+            <p id="comment-text">${commentContent}</p>
+            
+        `;
+
+                // 페이지에 새 댓글 추가
+                commentsContainer.appendChild(newComment);
+                document.getElementById('comment-input').value = ''; // 입력 필드 초기화
+            } else {
+                const errorData = await response.json();
+                alert(errorData.error);
+            }
+        } catch (error) {
+            console.error('댓글 저장 중 오류 발생:', error);
+        }
+    }
+

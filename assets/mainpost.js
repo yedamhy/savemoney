@@ -271,6 +271,8 @@
 
       // 모달을 보이게 합니다.
       modal.style.display = 'block';
+
+      // 댓글 띄우기
       const commentsData = await fetchComments(postInfo.post_id);
       displayComments(commentsData);
 
