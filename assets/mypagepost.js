@@ -285,6 +285,9 @@ function closePostModal() {
 
 
         modalContent.innerHTML = `
+         <div style="text-align: right;">
+           <button id="delete-post-button" onclick="deletePost(${postInfo.post_id})">삭제 ❌  </button>
+         </div>
       
         <table border = "1" id="myTable" class="table" style="overflow: auto;">
           <tr class="price">
@@ -317,9 +320,6 @@ function closePostModal() {
 
             <span class="likes-count">좋아요 ${like_cnt}개 </span>
             <div><button class="like-button">좋아요 ❤️</button> 
-         </div>
-         <div>
-           <button id="delete-post-button" onclick="deletePost(${postInfo.post_id})">삭제 ❌  </button>
          </div>
             
           </div>
