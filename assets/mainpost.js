@@ -56,6 +56,7 @@
      }
  }
 
+ // 좋아요 개수
 async function fetchLike(postId){
      try{
          const response = await fetch(`/getLikeCnt?postId=${postId}`);
@@ -125,6 +126,7 @@ async function fetchCommentCount(postId){
   function formatPrice(price) {
       return new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(price);
   }
+
 
   // 게시글을 HTML 문자열로 변환하여 화면에 표시하는 함수
   function displayPosts(postsData){
