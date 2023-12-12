@@ -164,6 +164,12 @@ router.get("/getLikeCnt", async (req, res) =>{
 
 // 좋아요 버튼 누르면 증가시키기
 router.post("/updateLike", async (req, res) => {
+  if (!req.session || !req.session.kakao || !req.session.kakao.id) {
+    const errorMessage = "로그인이 필요합니다.";
+    console.error(errorMessage);
+    // 에러 메시지를 클라이언트로 전송
+    return res.status(500).json({ message: errorMessage });
+  }
   const postId = req.query.postId;
 
   await dbPool.query("likeUpdate", [postId]);
@@ -173,7 +179,17 @@ router.post("/updateLike", async (req, res) => {
 
 // 댓글 저장하기
 router.post("/saveComment", async (req, res) => {
+  
   try {
+    if (!req.session || !req.session.kakao || !req.session.kakao.id) {
+      const errorMessage = "로그인이 필요합니다.";
+      console.error(errorMessage);
+      // 에러 메시지를 클라이언트로 전송
+      return res.status(500).json({ error: errorMessage });
+    }
+
+
+
     // 요청 본문에서 postId와 commentContent를 추출
     const { postId, commentContent } = req.body;
     console.log("댓글에서 확인 : ", req.body);
