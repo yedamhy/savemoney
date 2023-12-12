@@ -396,6 +396,7 @@ async function fetchCommentCount(postId){
 
          if (response.ok) {
              const commentsContainer = document.getElementById('comments-container');
+             const commentsCountElement = document.querySelector('.comments-count'); // 댓글 개수를 표시하는 요소 찾기
 
              // 날짜 형식 변환
 
@@ -423,6 +424,12 @@ async function fetchCommentCount(postId){
              // 페이지에 새 댓글 추가
              commentsContainer.appendChild(newComment);
              document.getElementById('comment-input').value = ''; // 입력 필드 초기화
+
+             // 댓글 개수 업데이트
+             const currentCount = parseInt(commentsCountElement.textContent.match(/\d+/)[0]);
+             commentsCountElement.textContent = `댓글 ${currentCount + 1}개`;
+
+
          } else {
              const errorData = await response.json();
              alert(errorData.error);
