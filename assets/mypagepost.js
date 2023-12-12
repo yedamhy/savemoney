@@ -145,7 +145,7 @@ function displayPosts(postsData){
     const threadContainer = document.getElementById('thread-container');
     threadContainer.innerHTML='';
 
-    const limitedPosts = postsData.slice(0, 6);
+    const limitedPosts = postsData;
     console.log(limitedPosts);
     
     limitedPosts.forEach((postInfo,index)=>{
@@ -163,7 +163,7 @@ function displayPosts(postsData){
       postElement.onclick= function(){
         openModalWithPost(postInfo);
       };
-
+      console.log("여긴 마이페이지 displayPosts");
       threadContainer.appendChild(postElement);
     })
   }
@@ -277,95 +277,95 @@ function closePostModal() {
 }
 
     // 게시글 창 열기 함수
-    async function openModalWithPost(postInfo) {
-        const modal = document.getElementById('myModal');
-        const modalContent = document.getElementById('modalContent');
-        const postDate = new Date(postInfo.date);
-        console.log(postInfo.image_path);
+async function openModalWithPost(postInfo) {
+    const modal = document.getElementById('myModal');
+    const modalContent = document.getElementById('modalContent');
+    const postDate = new Date(postInfo.date);
+    console.log(postInfo.image_path);
 
 
-        modalContent.innerHTML = `
-         <div style="text-align: right;">
-           <button id="delete-post-button" onclick="deletePost(${postInfo.post_id})">삭제 ❌  </button>
-         </div>
-      
-        <table border = "1" id="myTable" class="table" style="overflow: auto;">
-          <tr class="price">
-          <td>${postInfo.nickname}</td>
-          </tr>
+    modalContent.innerHTML = `
+     <div style="text-align: right;">
+       <button id="delete-post-button" onclick="deletePost(${postInfo.post_id})">삭제 ❌  </button>
+     </div>
+  
+    <table border = "1" id="myTable" class="table" style="overflow: auto;">
+      <tr class="price">
+      <td>${postInfo.nickname}</td>
+      </tr>
 
-          <tr class="price" >     
-          <td>${postDate.toLocaleDateString()}</td>
-          </tr>
+      <tr class="price" >     
+      <td>${postDate.toLocaleDateString()}</td>
+      </tr>
 
-          <tr class="price">
-          <td>${formatPrice(postInfo.price)}</td>
-          </tr>
+      <tr class="price">
+      <td>${formatPrice(postInfo.price)}</td>
+      </tr>
 
-          <tr>
-          <td>${postInfo.text}</td>
-          </tr>
-          <tr>
-          <td>${postInfo.image_path ? `<img src="${postInfo.image_path}" alt="게시물 이미지" style="max-width: 50%; max-height: 40%;">` : ''}</td>
-            </tr>
-        </table>
-        `;
+      <tr>
+      <td>${postInfo.text}</td>
+      </tr>
+      <tr>
+      <td>${postInfo.image_path ? `<img src="${postInfo.image_path}" alt="게시물 이미지" style="max-width: 50%; max-height: 40%;">` : ''}</td>
+        </tr>
+    </table>
+    `;
 
-        const comment_cnt = await fetchCommentCount(postInfo.post_id);
-        const like_cnt = await fetchLike(postInfo.post_id);
-        // 댓글 관련 영역
-        modalContent.innerHTML += `
-         <div class="comments-header">
-            <span class="comments-count">댓글 ${comment_cnt}개 </span>
+    const comment_cnt = await fetchCommentCount(postInfo.post_id);
+    const like_cnt = await fetchLike(postInfo.post_id);
+    // 댓글 관련 영역
+    modalContent.innerHTML += `
+     <div class="comments-header">
+        <span class="comments-count">댓글 ${comment_cnt}개 </span>
 
-            <span class="likes-count">좋아요 ${like_cnt}개 </span>
-            <div><button class="like-button">좋아요 ❤️</button> 
-         </div>
-            
-          </div>
+        <span class="likes-count">좋아요 ${like_cnt}개 </span>
+        <div><button class="like-button">좋아요 ❤️</button> 
+     </div>
         
-          <div id="comments-section">
-            <p><b>Comment</b></p>
-            <textarea id="comment-input" placeholder="댓글을 입력하세요." style =" height: 30px" ></textarea>
-            <button id="comment-button" onclick="postComment(${postInfo.post_id})">댓글 작성 💬 </button>
-            <div id="comments-container"></div>
-          </div>
-        `;
+      </div>
+    
+      <div id="comments-section">
+        <p><b>Comment</b></p>
+        <textarea id="comment-input" placeholder="댓글을 입력하세요." style =" height: 30px" ></textarea>
+        <button id="comment-button" onclick="postComment(${postInfo.post_id})">댓글 작성 💬 </button>
+        <div id="comments-container"></div>
+      </div>
+    `;
 
 
-        // 모달을 보이게 합니다.
-        modal.style.display = 'block';
+    // 모달을 보이게 합니다.
+    modal.style.display = 'block';
 
-        // 댓글 띄우기
-        const commentsData = await fetchComments(postInfo.post_id);
-        displayComments(commentsData);
+    // 댓글 띄우기
+    const commentsData = await fetchComments(postInfo.post_id);
+    displayComments(commentsData);
 
-        // 좋아요 버튼 클릭 이벤트 리스너 추가
-        const likeButton = document.querySelector('.like-button');
-        likeButton.addEventListener('click', async () => {
-            const postId = postInfo.post_id;
+    // 좋아요 버튼 클릭 이벤트 리스너 추가
+    const likeButton = document.querySelector('.like-button');
+    likeButton.addEventListener('click', async () => {
+        const postId = postInfo.post_id;
 
-            // 좋아요 개수 증가
-            const newLikeCount = await increaseLikeCount(postId);
+        // 좋아요 개수 증가
+        const newLikeCount = await increaseLikeCount(postId);
 
-            if (newLikeCount !== -1) {
-                // UI에 좋아요 개수 업데이트
-                const likesCountElement = document.querySelector('.likes-count');
-                likesCountElement.textContent = `좋아요 ${newLikeCount}개`;
-            }
-        });
-
-
-        // 추가: 모달 외부를 클릭하면 모달이 닫히도록 설정
-        window.onclick = function (event) {
-            const modal = document.getElementById('myModal'); // 모달의 ID를 'myModal'로 수정
-            if (event.target == modal) {
-                modal.style.display = 'none';
-            }
-        };
-    }
+        if (newLikeCount !== -1) {
+            // UI에 좋아요 개수 업데이트
+            const likesCountElement = document.querySelector('.likes-count');
+            likesCountElement.textContent = `좋아요 ${newLikeCount}개`;
+        }
+    });
 
 
+    // 추가: 모달 외부를 클릭하면 모달이 닫히도록 설정
+    window.onclick = function (event) {
+        const modal = document.getElementById('myModal'); // 모달의 ID를 'myModal'로 수정
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    };
+}
+
+// 좋아요 클릭
 async function increaseLikeCount(postId) {
     try {
         // 현재 좋아요 개수 가져오기

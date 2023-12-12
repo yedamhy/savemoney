@@ -231,7 +231,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function fetchAndDisplayStamps() {
   try {
     // 서버에서 도장 정보 불러오기
-    const response = await fetch("/challenge/stamps");
+    const response = await fetch("challenge/stamps");
     const { dates, userId } = await response.json();
 
     // 도장이 찍힌 날짜에 해당하는 HTML 요소를 찾아서 스타일을 변경

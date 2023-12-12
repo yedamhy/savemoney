@@ -8,9 +8,9 @@ router.get("/kakao", authController.redirectToKakao);
 router.get("/kakao/callback", authController.handleKakaoCallback);
 router.get("/logout", authController.logoutFromKakao);
 router.get("/unlink", authController.unlinkKakaoAccount);
-router.get("/challenge", function (req, res, next) {
-  res.render("challenge.html");
-});
+//router.get("/challenge", function (req, res, next) {
+ // res.render("challenge.njk");
+//});
 
 
 

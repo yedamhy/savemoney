@@ -134,7 +134,7 @@ async function fetchCommentCount(postId){
     const threadContainer = document.getElementById('thread-container');
     threadContainer.innerHTML='';
 
-    const limitedPosts = postsData.slice(0, 6);
+    const limitedPosts = postsData;
     console.log(limitedPosts);
     
     limitedPosts.forEach((postInfo,index)=>{
@@ -152,7 +152,7 @@ async function fetchCommentCount(postId){
       postElement.onclick= function(){
         openModalWithPost(postInfo);
       };
-
+      console.log("여긴 메인페이지 displayPosts");
       threadContainer.appendChild(postElement);
     })
   }

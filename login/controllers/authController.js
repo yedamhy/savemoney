@@ -135,6 +135,34 @@ exports.renderMyPage = async (req, res) => {
     });
 };
 
+// challenge 렌더링을 위한 새 함수
+exports.renderChallenge = async (req, res) => {
+    let displayNickname = '로그인 해주세요';
+    let displayImage = 'img/profile-img.jpg';
+    let loggedIn = false;
+    let level = "Bronze";
+
+    if (req.session.kakao) {
+        // 세션에 카카오 정보가 있으면 템플릿 변수로 전달
+        displayNickname = req.session.kakao.properties.nickname + '님';
+        displayImage = req.session.kakao.properties.thumbnail_image;
+        loggedIn = true; // 로그인 상태를 true로 설정
+        userRanking =  await mysql.query("userLevel", req.session.kakao.id);
+        level = userRanking[0].level;
+    }
+
+    res.render('challenge', {
+        nickname: displayNickname,
+        user_image: displayImage,
+        loggedIn: loggedIn,
+        ranking: level
+    });
+};
+
+
+
+
+
 // 로그아웃 기능
 exports.logoutFromKakao = async (req, res) => {
     delete req.session.kakao;

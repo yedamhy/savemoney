@@ -49,11 +49,10 @@ app.use("/auth", authRouter); // auth 경로 설정
 app.get("/", authController.renderHomePage);
 //메인기본화면
 app.use("/", postRouter);
-app.use("/challenge", challengeRouter);
 
 // mypage
 app.get('/mypage', authController.renderMyPage);
-
+app.get('/challenge', authController.renderChallenge);
 // 서버 시작
 
 const PORT = 8080;
