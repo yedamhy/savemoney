@@ -318,6 +318,9 @@ function closePostModal() {
             <span class="likes-count">좋아요 ${like_cnt}개 </span>
             <div><button class="like-button">좋아요 ❤️</button> 
          </div>
+         <div>
+           <button id="delete-post-button" onclick="deletePost(${postInfo.post_id})">삭제 ❌  </button>
+         </div>
             
           </div>
         
@@ -390,59 +393,97 @@ async function increaseLikeCount(postId) {
 }
 
 
-    // 댓글을 서버로 전송하고 페이지에 추가하는 함수
-    async function postComment(postId) {
-        const commentContent = document.getElementById('comment-input').value;
+// 댓글을 서버로 전송하고 페이지에 추가하는 함수
+async function postComment(postId) {
+    const commentContent = document.getElementById('comment-input').value;
 
-        if (commentContent.trim() === '') {
-            alert('댓글 내용을 입력하세요.');
-            return;
-        }
+    if (commentContent.trim() === '') {
+        alert('댓글 내용을 입력하세요.');
+        return;
+    }
 
-        try {
-            const response = await fetch('/saveComment', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ postId, commentContent })
+    try {
+        const response = await fetch('/saveComment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ postId, commentContent })
+        });
+
+        if (response.ok) {
+            const commentsContainer = document.getElementById('comments-container');
+
+            // 날짜 형식 변환
+
+            const commentDate = new Date();
+
+            const formattedDate = commentDate.toLocaleString('ko-KR', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true, // 24시간 형식으로 표시
+                timeZone: 'Asia/Seoul', // 한국 시간대로 설정
             });
 
-            if (response.ok) {
-                const commentsContainer = document.getElementById('comments-container');
+            // 새 댓글 요소 생성
+            const newComment = document.createElement('div');
+            newComment.className = 'comment-box'; // CSS 클래스 적용
+            newComment.innerHTML = `
+        <p id="comment-date">${formattedDate}</p>
+        <p id="comment-text">${commentContent}</p>
+        
+    `;
 
-                // 날짜 형식 변환
-
-                const commentDate = new Date();
-
-                const formattedDate = commentDate.toLocaleString('ko-KR', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: true, // 24시간 형식으로 표시
-                    timeZone: 'Asia/Seoul', // 한국 시간대로 설정
-                });
-
-                // 새 댓글 요소 생성
-                const newComment = document.createElement('div');
-                newComment.className = 'comment-box'; // CSS 클래스 적용
-                newComment.innerHTML = `
-            <p id="comment-date">${formattedDate}</p>
-            <p id="comment-text">${commentContent}</p>
-            
-        `;
-
-                // 페이지에 새 댓글 추가
-                commentsContainer.appendChild(newComment);
-                document.getElementById('comment-input').value = ''; // 입력 필드 초기화
-            } else {
-                const errorData = await response.json();
-                alert(errorData.error);
-            }
-        } catch (error) {
-            console.error('댓글 저장 중 오류 발생:', error);
+            // 페이지에 새 댓글 추가
+            commentsContainer.appendChild(newComment);
+            document.getElementById('comment-input').value = ''; // 입력 필드 초기화
+        } else {
+            const errorData = await response.json();
+            alert(errorData.error);
         }
+    } catch (error) {
+        console.error('댓글 저장 중 오류 발생:', error);
     }
+}
+
+// 포스트 삭제
+async function deletePost(postId) {
+    try {
+        // 사용자가 삭제를 확실히 하고 싶은지 물어보기
+        const isConfirmed = confirm('이 포스트를 삭제하시겠습니까?');
+        if (!isConfirmed) {
+            return; // 사용자가 취소를 누른 경우 함수 종료
+        }
+
+        // 서버에 삭제 요청 보내기
+        const response = await fetch(`/deletePost?postId=${postId}`, {
+            method: 'DELETE'
+        });
+
+        if (!response.ok) {
+            throw new Error('서버 응답 오류');
+        }
+
+        // 삭제 성공 시 사용자에게 알림
+        alert('포스트가 삭제되었습니다.');
+
+        // 모달 창을 찾아서 닫기
+        const modal = document.getElementById('myModal'); // 실제 모달의 ID로 변경해야 함
+        if (modal) {
+            modal.style.display = 'none';
+        } else {
+            console.error('모달 요소를 찾을 수 없습니다.');
+        }
+
+        // 화면 갱신 로직 (예: 포스트 목록 다시 불러오기)
+        await fetchAndDisplayUserPosts();
+    } catch (error) {
+        console.error('포스트 삭제 중 오류 발생:', error);
+        alert('포스트를 삭제하는 동안 오류가 발생했습니다.');
+    }
+}
+
 

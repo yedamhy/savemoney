@@ -9,6 +9,7 @@ module.exports = {
   postInsert: `INSERT INTO post (date, price, text, user_id, nickname, image_path) VALUES (?, ?, ?, ?, ?, ?)`,
   postList: `SELECT * FROM post`,
   postUserList: `SELECT * FROM post WHERE user_id = ?`,
+  postDelete: `DELETE FROM post WHERE post_id = ?`,
 
   likeUpdate : `UPDATE post SET like_cnt = like_cnt + 1 WHERE post_id = ?`,
   likeCount : `SELECT like_cnt FROM post WHERE post_id = ?`,

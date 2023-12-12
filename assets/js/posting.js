@@ -216,6 +216,22 @@ router.get("/getComments", async (req, res) => {
   }
 });
 
+// post.js 또는 해당 라우트 파일 내
+router.delete('/deletePost', async (req, res) => {
+  const postId = req.query.postId;
+
+  // 데이터베이스에서 해당 postId를 가진 포스트를 삭제하는 로직
+  try {
+    await dbPool.query("postDelete", [postId]);
+    res.status(200).json({ message: '포스트가 성공적으로 삭제되었습니다.' });
+  } catch (error) {
+    console.error('포스트 삭제 중 오류 발생:', error);
+    res.status(500).json({ error: '포스트를 삭제하는 동안 오류 발생' });
+  }
+});
+
+
+
 function saveComment() {
   let commentContent = document.getElementById("comment-content").value;
 
