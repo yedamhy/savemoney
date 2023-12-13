@@ -50,9 +50,8 @@ router.get("/getPosts", (req, res) => {
   // res.status(200).json(sortedPosts);
 });
 
-
 //마이페이지 게시물불러오기
-router.get("/getUserPosts", async(req, res) => {
+router.get("/getUserPosts", async (req, res) => {
   try {
     // 세션에서 사용자 ID를 가져오기 전에 해당 객체와 프로퍼티가 존재하는지 확인
     if (!req.session || !req.session.kakao || !req.session.kakao.id) {
@@ -70,7 +69,9 @@ router.get("/getUserPosts", async(req, res) => {
     console.log(postInfo_user.kakao_id);
 
     console.log("getPosts 들어옴");
-    const user_post = await dbPool.query("postUserList", [postInfo_user.kakao_id]);
+    const user_post = await dbPool.query("postUserList", [
+      postInfo_user.kakao_id,
+    ]);
     res.json(user_post);
 
     console.log("게시물 불러오기 성공:");
@@ -149,17 +150,15 @@ router.post("/savePost", upload.single("file"), async (req, res) => {
 });
 
 // 좋아요 개수 가져오기
-router.get("/getLikeCnt", async (req, res) =>{
-  try{
+router.get("/getLikeCnt", async (req, res) => {
+  try {
     const postId = req.query.postId;
 
     // 데이터베이스에서 좋아요 개수 가져오기
     const post_like = await dbPool.query("likeCount", [postId]);
     res.json(post_like[0]);
-    console.log("좋아요 개수" , post_like[0]);
-  } catch {
-
-  }
+    console.log("좋아요 개수", post_like[0]);
+  } catch {}
 });
 
 // 좋아요 버튼 누르면 증가시키기
@@ -174,12 +173,10 @@ router.post("/updateLike", async (req, res) => {
 
   await dbPool.query("likeUpdate", [postId]);
   res.status(200).json({ message: "좋아요가 성공적으로 업데이트 되었습니다." });
-})
-
+});
 
 // 댓글 저장하기
 router.post("/saveComment", async (req, res) => {
-  
   try {
     if (!req.session || !req.session.kakao || !req.session.kakao.id) {
       const errorMessage = "로그인이 필요합니다.";
@@ -187,8 +184,6 @@ router.post("/saveComment", async (req, res) => {
       // 에러 메시지를 클라이언트로 전송
       return res.status(500).json({ error: errorMessage });
     }
-
-
 
     // 요청 본문에서 postId와 commentContent를 추출
     const { postId, commentContent } = req.body;
@@ -233,20 +228,18 @@ router.get("/getComments", async (req, res) => {
 });
 
 // post.js 또는 해당 라우트 파일 내
-router.delete('/deletePost', async (req, res) => {
+router.delete("/deletePost", async (req, res) => {
   const postId = req.query.postId;
 
   // 데이터베이스에서 해당 postId를 가진 포스트를 삭제하는 로직
   try {
     await dbPool.query("postDelete", [postId]);
-    res.status(200).json({ message: '포스트가 성공적으로 삭제되었습니다.' });
+    res.status(200).json({ message: "포스트가 성공적으로 삭제되었습니다." });
   } catch (error) {
-    console.error('포스트 삭제 중 오류 발생:', error);
-    res.status(500).json({ error: '포스트를 삭제하는 동안 오류 발생' });
+    console.error("포스트 삭제 중 오류 발생:", error);
+    res.status(500).json({ error: "포스트를 삭제하는 동안 오류 발생" });
   }
 });
-
-
 
 function saveComment() {
   let commentContent = document.getElementById("comment-content").value;

@@ -8,21 +8,29 @@
 
 /*-Base-*/
 
+@import url("https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gowun+Batang&family=Jua&display=swap");
+
+.font {
+  font-family: "Jua", sans-serif;
+}
 body {
   background-color: #ecebeb;
-  font-family: "Open Sans", sans-serif;
+
+  font-family: "Jua", sans-serif;
 }
 p {
-  color: #a7a7a7;
+  color: #302f2f;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: medium;
 }
 a {
-  color: #85ad90;
+  color: #302f2f;
 }
 
 /*-Header-*/
 .main-header .header {
   background-color: #ffffff;
-  border-bottom: 5px solid #575b58;
+  border-bottom: 5px solid #515151;
   padding: 20px 0px;
 }
 .title image {
@@ -49,7 +57,7 @@ a {
   margin: 0px 0px 0px 0px;
   display: table;
   border-radius: 10px;
-  color: #85ad90;
+  color: #82b093;
 }
 .goal-summary .backers span,
 .goal-summary .funded span,
@@ -66,7 +74,7 @@ a {
 }
 .goal-summary .reminder a:hover,
 .goal-summary .reminder a:focus {
-  background-color: #85ad90;
+  background-color: #82b093;
   color: #fff;
 }
 @media (max-width: 767px) {
@@ -88,8 +96,14 @@ a {
   padding: 30px;
   margin-bottom: 30px;
 }
+.whatsup {
+  background-color: #c9c9c9;
+  border-radius: 4px;
+  padding: 30px;
+  margin-bottom: 30px;
+}
 .section-block.summary {
-  background-color: #99deab;
+  background-color: #82b093;
 }
 .section-block.summary h1 {
   color: #fff;
@@ -100,13 +114,13 @@ a {
   background-color: transparent;
 }
 .section-block.signup {
-  background-color: #99deab;
+  background-color: #82b093;
 }
 .section-block h1 {
   margin-top: 0;
 }
 .section-title {
-  color: #99deab;
+  color: #82b093;
   border-radius: 4px;
   display: table;
   padding: 10px 0px;
@@ -142,7 +156,7 @@ a {
   margin: 5px;
 }
 .profile-contents ul li a {
-  background-color: #85ad90;
+  background-color: #82b093;
   color: #fff;
   height: 40px;
   width: 40px;
@@ -158,14 +172,14 @@ a {
   margin-top: 10px;
 }
 .profile-contents ul li a:hover {
-  background-color: #779a81;
+  background-color: #82b093;
 }
 
 /*-Funding Meta-*/
 .funding-meta {
 }
 .funding-meta h1 {
-  background: #99deab;
+  background: #82b093;
   color: #fff;
   border-radius: 4px;
   display: table;
@@ -180,7 +194,7 @@ a {
   margin: 0px 10px 10px 0px;
 }
 .type-meta i.fa {
-  color: #99deab;
+  color: #82b093;
   margin-right: 5px;
 }
 .funding-meta h2 {
@@ -207,7 +221,7 @@ a {
 .funding-meta h2,
 .funding-meta span.contribution {
   display: inline-block;
-  color: #85ad90;
+  color: #82b093;
 }
 .funding-meta span.contribution,
 .funding-meta span.goal-progress {
@@ -227,7 +241,7 @@ a {
   padding-right: 5px;
 }
 .progress-bar {
-  background-color: #99deab;
+  background-color: #82b093;
   box-shadow: none;
 }
 .progress {
@@ -240,19 +254,16 @@ a {
 /*-mypage-*/
 .mypage-block {
   position: relative;
-  background-color: #fff;
+  background-color: #f4f4f4;
   margin: 0;
   padding: 20px;
-  margin-bottom: 10px;
 }
 .mypage-block:hover {
-  background-color: #dcf7e3;
 }
 .mypage-block.last {
   margin-bottom: 0;
 }
 .mypage-block h3 {
-  background: #99deab;
   color: #fff;
   font-size: 15px;
   font-weight: 700;
@@ -264,11 +275,11 @@ a {
 .mypage-block h2 {
   font-size: 20px;
   font-weight: 300;
-  color: #99deab;
+
   margin: 15px 0px;
 }
 .mypage-block i.fa {
-  color: #99deab;
+  color: #82b093;
 }
 .mypage-block span {
   margin-bottom: 10px;
@@ -329,7 +340,7 @@ a {
 .nav-tabs > li.active > a:focus,
 .nav-tabs > li.active > a:hover {
   color: #fff;
-  background-color: #99deab;
+  background-color: #82b093;
   border: 0;
   border-radius: 4px;
   font-weight: 700;
@@ -369,7 +380,7 @@ a {
   border: 0;
 }
 .btn.btn-launch {
-  background-color: #99deab;
+  background-color: #82b093;
   color: #fff;
   font-size: 17px;
   font-weight: 600;
@@ -380,19 +391,22 @@ a {
 .btn.btn-mypage,
 .btn.btn-mypage:hover,
 .btn.btn-mypage :focus {
-  background-color: #85ad90;
+  background-color: #c1c1c1;
   box-shadow: none;
   width: 260px;
 }
 .btn.btn-mypage {
-  background-color: #99deab;
+  background-color: #82b093;
+  height: 60px;
+  width: 260px;
   color: #fff;
-  font-size: 14px;
-  font-weight: 600;
-  padding: 5px 15px;
+
+  font-size: 20px;
+  font-weight: 800;
+  padding: 15px 15px;
 }
 .btn.btn-signup {
-  background-color: #99deab;
+  background-color: #82b093;
   color: #fff;
   height: 40px;
   width: 43px;
@@ -408,7 +422,7 @@ a {
 }
 .btn.btn-contact:hover,
 .btn.btn-contact:focus {
-  background-color: #779a81;
+  background-color: #82b093;
 }
 .btn.btn-contact i.fa {
   margin-right: 10px;
@@ -419,7 +433,7 @@ a {
   margin-bottom: 10px;
 }
 .btn.btn-download {
-  background-color: #85ad90;
+  background-color: #82b093;
   color: #fff;
 }
 
@@ -443,7 +457,7 @@ a {
 
 /*-Footer-*/
 .footer {
-  background-color: #85ad90;
+  background-color: #82b093;
   padding: 10px;
   text-align: center;
 }
@@ -472,7 +486,9 @@ input {
 
 #add-post-button {
   font-size: 2em;
+  font-weight: 700;
   cursor: pointer;
+  background-color: #82b093;
 }
 
 .modal {
@@ -493,6 +509,7 @@ input {
   background-color: #fff;
   padding: 20px;
   border-radius: 5px;
+  color: var(#302f2f);
 }
 
 .close {
@@ -505,17 +522,30 @@ textarea {
   height: 100px;
   margin-bottom: 10px;
 }
-
+.like-button {
+  background-color: #82b093;
+}
+.comment-button {
+  background-color: #82b093;
+}
+.save-button {
+  background-color: #82b093;
+}
+.delete-post-button {
+  background-color: #82b093;
+}
 .post-box {
   border: 1px solid #ccc;
   padding: 10px;
   margin: 10px 0;
   cursor: pointer;
+  font-family: "Jua", sans-serif;
 }
 
 .post-content {
   font-weight: bold;
   margin-bottom: 5px;
+  color: #302f2f;
 }
 
 .comments-container {
@@ -526,4 +556,5 @@ textarea {
   margin-left: 20px;
   padding: 5px;
   border: 1px solid #ddd;
+  color: #302f2f;
 }

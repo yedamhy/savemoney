@@ -72,38 +72,37 @@ const renderCalendar = () => {
 
   // 클릭 이벤트 리스너 업데이트
   updateClickEventListeners();
+  // 클릭한 날짜 상태 복원
+  restoreClickedDates();
 };
 
-//전월달력
+// 전월달력
 const preMonth = () => {
   date.setMonth(date.getMonth() - 1);
   renderCalendar();
 };
 
-//다음월달력
+// 다음월 달력
 const nextMonth = () => {
   date.setMonth(date.getMonth() + 1);
   renderCalendar();
 };
 
-//현재월달력
+//현재월 달력
 const goToday = () => {
   date = new Date();
   renderCalendar();
 };
 
-///////////////////////////////////////////////////여기부터 손보면 될듯///////////////////////////////////
-
 const updateClickEventListeners = () => {
   const dateElements = document.querySelectorAll(".date");
-
   dateElements.forEach((dateElement) => {
-    // dateElement.removeEventListener("click", handleDateClick);
+    dateElement.removeEventListener("click", handleDateClick);
     dateElement.addEventListener("click", handleDateClick);
   });
 };
 
-// 날짜 클릭시 도장 찍기
+//날짜 클릭시 도장찍기
 const handleDateClick = async (event) => {
   if (!event || !event.target) {
     return;
@@ -121,7 +120,6 @@ const handleDateClick = async (event) => {
     .textContent.split(" ")[1];
   const monthNumber = parseInt(clickedMonth.replace("월", ""), 10);
 
-  //오늘날짜랑 클릭한 날짜 받아오기
   const today = new Date();
   const clickedDate = new Date(clickedYear, monthNumber - 1, dateAttribute);
 
@@ -159,7 +157,7 @@ const handleChallengeClick = async (
   dateAttribute
 ) => {
   const confirmation = confirm(
-    `${clickedYear}년 ${monthNumber}월 ${dateAttribute}일 만원챌린지 도전하시겠습니까?`
+    `${clickedYear}년 ${monthNumber}월 ${dateAttribute}일 업로드를 완료하셨습니까? 챌린지 도전하시는 건가요`
   );
 
   if (confirmation) {
@@ -199,24 +197,26 @@ const handleChallengeClick = async (
           const successData = await successResponse.json();
           // 성공한 경우의 추가적인 처리 또는 메시지 표시
           popupMessage = successData.message;
-          // 성공하면 도장 보이게 하기
-          clickedDateElement.querySelector(".stamp-image").style.display =
-            "block";
         } else {
           console.error(
             "서버에서 챌린지 성공 날짜를 저장하는 중에 오류가 발생했습니다."
           );
         }
+
+        // 성공하면 도장 보이게 하기
+        clickedDateElement.querySelector(".stamp-image").style.display =
+          "block";
       }
+
       alert(popupMessage);
     } else {
       alert("서버에서 데이터를 가져오는 중에 오류가 발생했습니다.");
     }
 
-    // // 클릭한 날짜 상태 저장
-    // const clickedDates = JSON.parse(localStorage.getItem("clickedDates")) || [];
-    // clickedDates.push(`${clickedYear}-${monthNumber}-${dateAttribute}`);
-    // localStorage.setItem("clickedDates", JSON.stringify(clickedDates));
+    // 클릭한 날짜 상태 저장
+    const clickedDates = JSON.parse(localStorage.getItem("clickedDates")) || [];
+    clickedDates.push(`${clickedYear}-${monthNumber}-${dateAttribute}`);
+    localStorage.setItem("clickedDates", JSON.stringify(clickedDates));
   }
 };
 
@@ -225,37 +225,66 @@ document.addEventListener("DOMContentLoaded", async () => {
   await fetchAndDisplayStamps();
   renderCalendar();
   updateClickEventListeners();
+  restoreClickedDates();
 });
 
 //날짜을 불러와 화면에 표시하는 함수
 async function fetchAndDisplayStamps() {
   try {
     // 서버에서 도장 정보 불러오기
-    const response = await fetch("challenge/stamps");
-    const { dates, userId } = await response.json();
+    const response = await fetch("/challenge/stamps");
 
-    // 도장이 찍힌 날짜에 해당하는 HTML 요소를 찾아서 스타일을 변경
-    dates.forEach((row) => {
-      const successDate = new Date(row.success_date);
-      successDate.setDate(successDate.getDate() + 1); // 하루를 더함 console로 찍어보니까 전날을 가져옴 근데 디비에는 해당날짜 제대로 들어가 있음
-      const formattedDate = successDate.toISOString().split("T")[0]; // 날짜 부분만 추출
-      console.log(formattedDate);
+    // 서버 응답이 성공인 경우
+    if (response.ok) {
+      const { dates } = await response.json();
+      // const userId = session.kakao.id;
 
-      //이게 원래 db에서 불러온 날짜를 달력 날짜에다가 넣는 거.. 근데 이게 제대로 안되는 거 같애애
-      const stampElement = document.querySelector(
-        `.date[data-date="${formattedDate}"].this`
-      );
+      // 도장이 찍힌 날짜에 해당하는 HTML 요소를 찾아서 스타일을 변경
+      dates.forEach((row) => {
+        const successDate = new Date(row.success_date);
+        successDate.setDate(successDate.getDate() + 1); // 하루를 더함
+        const formattedDate = successDate.getDate();
 
-      //이게 그 날짜에 해당하는 달력이미지 불러오는거..
-      if (stampElement) {
-        const stampImage = stampElement.querySelector(".stamp-image");
+        // 사용자 ID가 현재 세션의 ID와 일치하면 도장 표시
+        const stampElement = document.querySelector(
+          `.date[data-date="${formattedDate}"].this`
+        );
 
-        if (stampImage) {
-          stampImage.style.display = "block";
+        if (stampElement) {
+          const stampImage = stampElement.querySelector(".stamp-image");
+
+          if (stampImage) {
+            stampImage.style.display = "block";
+          }
         }
-      }
-    });
+      });
+    } else if (response.status === 401) {
+      // 서버에서 401 상태 코드를 반환하면 로그인이 필요하다는 메시지를 보여줌
+      window.location.href = "/";
+      alert("로그인이 필요합니다.");
+    } else {
+      // 기타 오류 처리
+      console.error("서버 응답 오류:", response.status);
+    }
   } catch (error) {
     console.error("날짜 불러오기 중 오류 발생", error);
   }
+}
+
+// 클릭한 날짜 상태 복원
+function restoreClickedDates() {
+  const calendarContainer = document.querySelector(".dates");
+  const clickedDates = JSON.parse(localStorage.getItem("clickedDates")) || [];
+
+  clickedDates.forEach((clickedDate) => {
+    const [clickedYear, clickedMonth, clickedDay] = clickedDate.split("-");
+    const clickedDateElement = calendarContainer.querySelector(
+      `.date[data-date="${clickedDay}"].this`
+    );
+
+    if (clickedDateElement) {
+      clickedDateElement.classList.add("clicked");
+      clickedDateElement.querySelector(".stamp-image").style.display = "block";
+    }
+  });
 }

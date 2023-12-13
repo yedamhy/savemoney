@@ -11,9 +11,8 @@ module.exports = {
   postUserList: `SELECT * FROM post WHERE user_id = ?`,
   postDelete: `DELETE FROM post WHERE post_id = ?`,
 
-  likeUpdate : `UPDATE post SET like_cnt = like_cnt + 1 WHERE post_id = ?`,
-  likeCount : `SELECT like_cnt FROM post WHERE post_id = ?`,
-
+  likeUpdate: `UPDATE post SET like_cnt = like_cnt + 1 WHERE post_id = ?`,
+  likeCount: `SELECT like_cnt FROM post WHERE post_id = ?`,
 
   commentInsert: `INSERT INTO comment_table (post_id, user_id, text, date) VALUES (?, ?, ?, ?)`,
   commentList: `SELECT * FROM comment_table WHERE post_id = ?`,

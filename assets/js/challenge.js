@@ -85,6 +85,14 @@ router.post("/challenge/save", async (req, res) => {
 // reload시 도장 찍혀있게
 router.get("/challenge/stamps", async (req, res) => {
   try {
+    if (!req.session || !req.session.kakao || !req.session.kakao.id) {
+      const errorMessage = "로그인이 필요합니다.";
+      console.error(errorMessage);
+
+      // Send a response to the client indicating the need for login
+      return res.status(401).json({ error: errorMessage });
+    }
+
     const userId = req.session.kakao.id;
     console.log(userId);
 

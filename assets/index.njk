@@ -163,7 +163,7 @@
                     </tr>
                   </table>
                 </div>
-                <button onclick="savePost()">게시물 저장</button>
+                <button class = "save-button" onclick="savePost()">게시물 저장</button>
 
 
 
@@ -196,7 +196,7 @@
                         id="comment-content"
                         placeholder="댓글을 입력하세요..."
                 ></textarea>
-                <button onclick="saveComment()">댓글 저장</button>
+                <button class= "save-button" onclick="saveComment()">댓글 저장</button>
                 <div id="comments-container"></div>
               </div>
             </div>
@@ -250,15 +250,15 @@
             {% endif %}
           </div>
         </div>
-        <div class="section-block">
+        <div class="whatsup">
           <!-- <h1 class="section-title">REWARDS</h1> -->
           <!--reward blocks-->
           <div class="mypage-block">
             <!-- <span><i class="fa fa-users"></i> 180 backers</span> -->
-            <a href="/mypage" class="btn btn-mypage">MY PAGE</a>
+            <a href="/mypage" class="btn btn-mypage">MY POST</a>
           </div>
         </div>
-        <div class="section-block">
+        <div class="whatsup">
           <div class="mypage-block">
             <!-- 버튼이 mypage 버튼과 같은 디자인이라 그냥 btn-mypage라고 똑같이 썼음 -->
             <a href="/challenge" class="btn btn-mypage">CHALLENGE</a>
