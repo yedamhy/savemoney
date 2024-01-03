@@ -1,4 +1,4 @@
-![image](https://github.com/yedamhy/savemoney/assets/87516405/32517c78-9d7b-4d4d-a217-80a53665ddc7)# 23-teampjt-webgurae
+# 23-teampjt-webgurae
 ## 💘 1. Team Name
 ### Web구래
 <br>
